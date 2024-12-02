@@ -70,6 +70,10 @@ FusionJokers.fusions = {
 		{ name = "j_smiley", carry_stat = nil, extra_stat = false }
 	}, result_joker = "j_uncanny_face", cost = 8 },
 	{ jokers = {
+		{ name = "j_ride_the_bus", carry_stat = nil, extra_stat = false },
+		{ name = "j_drivers_license", carry_stat = nil, extra_stat = false }
+	}, result_joker = "j_commercial_driver", cost = 8 },
+	{ jokers = {
 		{ name = "j_hiker", carry_stat = nil, extra_stat = false },
 		{ name = "j_dusk", carry_stat = nil, extra_stat = false }
 	}, result_joker = "j_camping_trip", cost = 10 },
