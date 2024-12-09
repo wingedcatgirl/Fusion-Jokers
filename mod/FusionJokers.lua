@@ -73,7 +73,7 @@ FusionJokers.fusions = {
 		{ name = "j_ride_the_bus", carry_stat = nil, extra_stat = false },
 		{ name = "j_drivers_license", carry_stat = nil, extra_stat = false }
 	}, result_joker = "j_commercial_driver", cost = 8 },
-	{ jokers = {
+  { jokers = {
 		{ name = "j_hiker", carry_stat = nil, extra_stat = false },
 		{ name = "j_dusk", carry_stat = nil, extra_stat = false }
 	}, result_joker = "j_camping_trip", cost = 10 },
@@ -105,12 +105,12 @@ SMODS.Joker.inject =function(self)
   SMODS_Joker_inject(self)
 end
 
-function FusionJokers.fusions:add_fusion(joker1, carry_stat1, extra1, joker2, carry_stat2, extra2, result_joker, cost)
+function FusionJokers.fusions:add_fusion(joker1, carry_stat1, extra1, joker2, carry_stat2, extra2, result_joker, cost, merged_stat, merge_stat1, merge_stat2, merge_extra)
 	table.insert(self, 
 		{ jokers = {
-			{ name = joker1, carry_stat = carry_stat1, extra_stat = extra1 },
-			{ name = joker2, carry_stat = carry_stat2, extra_stat = extra2 }
-		}, result_joker = result_joker, cost = cost })
+			{ name = joker1, carry_stat = carry_stat1, extra_stat = extra1, merge_stat = merge_stat1 },
+			{ name = joker2, carry_stat = carry_stat2, extra_stat = extra2, merge_stat = merge_stat2 }
+		}, result_joker = result_joker, cost = cost, merged_stat = merged_stat, merge_extra = merge_extra })
 end
 
 
@@ -202,7 +202,6 @@ function Card:fuse_card()
 		G.E_MANAGER:add_event(Event({trigger = 'immediate',func = function()
 			ease_dollars(-chosen_fusion.cost)
 			local j_fusion = create_card('Joker', G.jokers, nil, nil, nil, nil, chosen_fusion.result_joker, nil)
-			
 			for index, pos in ipairs(joker_pos) do
 				local check_joker = chosen_fusion.jokers[index]
 				if check_joker.carry_stat then
@@ -212,10 +211,25 @@ function Card:fuse_card()
 						j_fusion.ability[check_joker.carry_stat] = G.jokers.cards[pos].ability[check_joker.carry_stat]
 					end
 				end
-				
+				if check_joker.merge_stat then
+					if chosen_fusion.merge_extra then
+						if check_joker.extra_stat then
+							j_fusion.ability.extra[chosen_fusion.merged_stat] = j_fusion.ability.extra[chosen_fusion.merged_stat] + G.jokers.cards[pos].ability.extra[check_joker.merge_stat]
+						else
+							j_fusion.ability.extra[chosen_fusion.merged_stat] = j_fusion.ability.extra[chosen_fusion.merged_stat] + G.jokers.cards[pos].ability[check_joker.merge_stat]
+						end
+					else
+						if check_joker.extra_stat then
+							j_fusion.ability[chosen_fusion.merged_stat] = j_fusion.ability[chosen_fusion.merged_stat] + G.jokers.cards[pos].ability.extra[check_joker.merge_stat]
+						else
+							j_fusion.ability[chosen_fusion.merged_stat] = j_fusion.ability[chosen_fusion.merged_stat] + G.jokers.cards[pos].ability[check_joker.merge_stat]
+						end
+					end
+				end
 				G.jokers.cards[pos]:start_dissolve({G.C.GOLD})
 			end
 			
+			print(tprint2(j_fusion.ability))
 			delay(0.3)
 
 			j_fusion:add_to_deck()
