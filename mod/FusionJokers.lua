@@ -229,7 +229,6 @@ function Card:fuse_card()
 				G.jokers.cards[pos]:start_dissolve({G.C.GOLD})
 			end
 			
-			print(tprint2(j_fusion.ability))
 			delay(0.3)
 
 			j_fusion:add_to_deck()
