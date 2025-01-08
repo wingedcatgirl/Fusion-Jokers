@@ -208,7 +208,7 @@ function Card:fuse_card()
 			break
 		end
 	end
-	print(self)
+
 	if chosen_fusion ~= nil then
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function()
 			play_sound('whoosh1')
@@ -231,6 +231,11 @@ function Card:fuse_card()
 				return a > b
 			end)
 			for index, pos in ipairs(joker_pos) do
+				for k,_ in pairs(SMODS.Stickers) do
+					if G.jokers.cards[pos].ability[k] then
+						j_fusion.ability[k] = true
+					end
+				end
 				local check_joker = chosen_fusion.jokers[index]
 				if check_joker.carry_stat then
 					if check_joker.extra_stat then
