@@ -114,23 +114,32 @@ function FusionJokers.fusions:add_fusion(joker1, carry_stat1, extra1, joker2, ca
 end
 
 
-local function has_joker(val)
-	for k, v in pairs(G.jokers.cards) do
-		if v.ability.set == 'Joker' and v.config.center_key == val then 
-			return k
+local function has_joker(val, start_pos)
+	if not start_pos then
+		start_pos = 0
+	end
+	for i, v in ipairs(G.jokers.cards) do
+		if v.ability.set == 'Joker' and v.config.center_key == val and i > start_pos then
+			return i
 		end
 	end
 	return -1
 end
-
 
 function Card:can_fuse_card()
 	for _, fusion in ipairs(FusionJokers.fusions) do
 		if G.GAME.dollars >= fusion.cost then
 			local found_me = false
 			local all_jokers = true
-			for __, joker in ipairs(fusion.jokers) do
-				if not (has_joker(joker.name) > -1) then
+			for _, joker in ipairs(fusion.jokers) do
+				if fusion.jokers[1].name == fusion.jokers[2].name then
+					if #SMODS.find_card(joker.name) > 1 then
+						return true
+					else
+						return false
+					end
+				end
+				if not next(SMODS.find_card(joker.name)) then
 					all_jokers = false
 				end
 				if joker.name == self.config.center_key then
@@ -145,10 +154,9 @@ function Card:can_fuse_card()
     return false
 end
 
-
 function Card:get_card_fusion()
 	for _, fusion in ipairs(FusionJokers.fusions) do
-		for __, joker in ipairs(fusion.jokers) do
+		for _, joker in ipairs(fusion.jokers) do
 			if joker.name == self.config.center_key then
 				return fusion
 			end
@@ -167,7 +175,7 @@ function Card:fuse_card()
     if self.children.use_button then self.children.use_button:remove(); self.children.use_button = nil end
     if self.children.sell_button then self.children.sell_button:remove(); self.children.sell_button = nil end
 
-	local my_pos = has_joker(self.config.center_key) 
+	local my_pos = has_joker(self.config.center_key)
 
 	local chosen_fusion = nil
 	local joker_pos = {}
@@ -175,8 +183,14 @@ function Card:fuse_card()
 	for _, fusion in ipairs(FusionJokers.fusions) do
 		joker_pos = {}
 		found_me = false
-		for __, joker in ipairs(fusion.jokers) do
-			if has_joker(joker.name) > -1 then
+		for _, joker in ipairs(fusion.jokers) do
+			if fusion.jokers[1].name == fusion.jokers[2].name then
+				if #SMODS.find_card(joker.name) > 1 and #joker_pos == 0 then
+					local first_pos = has_joker(joker.name)
+					table.insert(joker_pos, first_pos)
+					table.insert(joker_pos, has_joker(joker.name, first_pos))
+				end
+			elseif next(SMODS.find_card(joker.name)) then
 				table.insert(joker_pos, has_joker(joker.name))
 			end
 			if joker.name == self.config.center_key then
