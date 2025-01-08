@@ -216,6 +216,9 @@ function Card:fuse_card()
 		G.E_MANAGER:add_event(Event({trigger = 'immediate',func = function()
 			ease_dollars(-chosen_fusion.cost)
 			local j_fusion = create_card('Joker', G.jokers, nil, nil, nil, nil, chosen_fusion.result_joker, nil)
+			table.sort(joker_pos, function (a, b)
+				return a > b
+			end)
 			for index, pos in ipairs(joker_pos) do
 				local check_joker = chosen_fusion.jokers[index]
 				if check_joker.carry_stat then
@@ -240,7 +243,8 @@ function Card:fuse_card()
 						end
 					end
 				end
-				G.jokers.cards[pos]:start_dissolve({G.C.GOLD})
+				--G.jokers.cards[pos]:start_dissolve({G.C.GOLD})
+				G.jokers.cards[pos]:remove()
 			end
 			
 			delay(0.3)
