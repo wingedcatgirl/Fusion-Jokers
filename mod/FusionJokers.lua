@@ -177,6 +177,11 @@ function Card:fuse_card()
 
 	local my_pos = has_joker(self.config.center_key)
 
+	local edition = nil
+	if self.edition then
+		edition = self.edition
+	end
+
 	local chosen_fusion = nil
 	local joker_pos = {}
 	local found_me = false
@@ -203,11 +208,14 @@ function Card:fuse_card()
 			break
 		end
 	end
-
+	print(self)
 	if chosen_fusion ~= nil then
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function()
 			play_sound('whoosh1')
 			for _, pos in ipairs(joker_pos) do
+				if not edition and G.jokers.cards[pos].edition then
+					edition = G.jokers.cards[pos].edition
+				end
 				G.jokers.cards[pos]:juice_up(0.3, 0.4)
 			end
 			return true
@@ -216,6 +224,9 @@ function Card:fuse_card()
 		G.E_MANAGER:add_event(Event({trigger = 'immediate',func = function()
 			ease_dollars(-chosen_fusion.cost)
 			local j_fusion = create_card('Joker', G.jokers, nil, nil, nil, nil, chosen_fusion.result_joker, nil)
+			if edition and not j_fusion.edition then
+				j_fusion.edition = edition
+			end
 			table.sort(joker_pos, function (a, b)
 				return a > b
 			end)
