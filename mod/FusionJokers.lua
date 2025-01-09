@@ -253,7 +253,6 @@ function Card:fuse_card()
 					end
 				end
 				local check_joker = pos.joker
-				print(check_joker)
 				if check_joker.carry_stat then
 					if check_joker.extra_stat then
 						j_fusion.ability.extra[check_joker.carry_stat] = G.jokers.cards[pos.pos].ability.extra[check_joker.carry_stat]
