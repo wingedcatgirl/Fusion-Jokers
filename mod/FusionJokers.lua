@@ -6,7 +6,6 @@
 --- BADGE_COLOUR: B26CBB
 --- PRIORITY: -10000
 --- PREFIX: fuse
---- VERSION: 1.0.2
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
@@ -193,11 +192,11 @@ function Card:fuse_card()
 			if fusion.jokers[1].name == fusion.jokers[2].name then
 				if #SMODS.find_card(joker.name) > 1 and #joker_pos == 0 then
 					local first_pos = has_joker(joker.name)
-					table.insert(joker_pos, first_pos)
-					table.insert(joker_pos, has_joker(joker.name, first_pos))
+					table.insert(joker_pos, {pos = first_pos, joker = joker})
+					table.insert(joker_pos, {pos = has_joker(joker.name, first_pos), joker = joker})
 				end
 			elseif next(SMODS.find_card(joker.name)) then
-				table.insert(joker_pos, has_joker(joker.name))
+				table.insert(joker_pos, {pos = has_joker(joker.name), joker = joker})
 			end
 			if joker.name == self.config.center_key then
 				found_me = true
@@ -214,10 +213,10 @@ function Card:fuse_card()
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function()
 			play_sound('whoosh1')
 			for _, pos in ipairs(joker_pos) do
-				if not edition and G.jokers.cards[pos].edition then
-					edition = G.jokers.cards[pos].edition
+				if not edition and G.jokers.cards[pos.pos].edition then
+					edition = G.jokers.cards[pos.pos].edition
 				end
-				G.jokers.cards[pos]:juice_up(0.3, 0.4)
+				G.jokers.cards[pos.pos]:juice_up(0.3, 0.4)
 			end
 			return true
 		end}))
@@ -229,39 +228,56 @@ function Card:fuse_card()
 				j_fusion.edition = edition
 			end
 			table.sort(joker_pos, function (a, b)
-				return a > b
+				return a.pos > b.pos
 			end)
 			for index, pos in ipairs(joker_pos) do
+				local isPrimary = false
+				if G.jokers.cards[pos.pos] == self then
+					isPrimary = true
+				end
 				for k,_ in pairs(SMODS.Stickers) do
-					if G.jokers.cards[pos].ability[k] then
-						j_fusion.ability[k] = true
+					if G.jokers.cards[pos.pos].ability[k] then
+						-- if string.find(k, "gemslot") then
+						-- 	local gemExists = false
+						-- 	for k1, _ in pairs(j_fusion.ability) do
+						-- 		if string.find(k1, "gemslot") then
+						-- 				gemExists = true
+						-- 		end
+						-- 	end
+						-- 	if isPrimary then
+						-- 		j_fusion.ability[k] = true
+						-- 	end
+						-- else
+							j_fusion.ability[k] = true
+						--end
 					end
 				end
-				local check_joker = chosen_fusion.jokers[index]
+				local check_joker = pos.joker
+				print(check_joker)
 				if check_joker.carry_stat then
 					if check_joker.extra_stat then
-						j_fusion.ability.extra[check_joker.carry_stat] = G.jokers.cards[pos].ability.extra[check_joker.carry_stat]
+						j_fusion.ability.extra[check_joker.carry_stat] = G.jokers.cards[pos.pos].ability.extra[check_joker.carry_stat]
 					else
-						j_fusion.ability[check_joker.carry_stat] = G.jokers.cards[pos].ability[check_joker.carry_stat]
+						j_fusion.ability[check_joker.carry_stat] = G.jokers.cards[pos.pos].ability[check_joker.carry_stat]
 					end
 				end
 				if check_joker.merge_stat then
 					if chosen_fusion.merge_extra then
 						if check_joker.extra_stat then
-							j_fusion.ability.extra[chosen_fusion.merged_stat] = j_fusion.ability.extra[chosen_fusion.merged_stat] + G.jokers.cards[pos].ability.extra[check_joker.merge_stat]
+							j_fusion.ability.extra[chosen_fusion.merged_stat] = j_fusion.ability.extra[chosen_fusion.merged_stat] + G.jokers.cards[pos.pos].ability.extra[check_joker.merge_stat]
 						else
-							j_fusion.ability.extra[chosen_fusion.merged_stat] = j_fusion.ability.extra[chosen_fusion.merged_stat] + G.jokers.cards[pos].ability[check_joker.merge_stat]
+							j_fusion.ability.extra[chosen_fusion.merged_stat] = j_fusion.ability.extra[chosen_fusion.merged_stat] + G.jokers.cards[pos.pos].ability[check_joker.merge_stat]
 						end
 					else
 						if check_joker.extra_stat then
-							j_fusion.ability[chosen_fusion.merged_stat] = j_fusion.ability[chosen_fusion.merged_stat] + G.jokers.cards[pos].ability.extra[check_joker.merge_stat]
+							j_fusion.ability[chosen_fusion.merged_stat] = j_fusion.ability[chosen_fusion.merged_stat] + G.jokers.cards[pos.pos].ability.extra[check_joker.merge_stat]
 						else
-							j_fusion.ability[chosen_fusion.merged_stat] = j_fusion.ability[chosen_fusion.merged_stat] + G.jokers.cards[pos].ability[check_joker.merge_stat]
+							j_fusion.ability[chosen_fusion.merged_stat] = j_fusion.ability[chosen_fusion.merged_stat] + G.jokers.cards[pos.pos].ability[check_joker.merge_stat]
 						end
 					end
 				end
 				--G.jokers.cards[pos]:start_dissolve({G.C.GOLD})
-				G.jokers.cards[pos]:remove()
+				G.jokers.cards[pos.pos]:remove()
 			end
 			
 			delay(0.3)
