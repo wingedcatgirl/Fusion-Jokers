@@ -113,6 +113,9 @@ function FusionJokers.fusions:add_fusion(joker1, carry_stat1, extra1, joker2, ca
 		}, result_joker = result_joker, cost = cost, merged_stat = merged_stat, merge_extra = merge_extra })
 end
 
+local to_number = to_number or function(num)
+	return num
+end
 
 local function has_joker(val, start_pos)
 	if not start_pos then
@@ -128,7 +131,7 @@ end
 
 function Card:can_fuse_card()
 	for _, fusion in ipairs(FusionJokers.fusions) do
-		if G.GAME.dollars >= fusion.cost then
+		if to_number(G.GAME.dollars) >= fusion.cost then
 			local found_me = false
 			local all_jokers = true
 			for _, joker in ipairs(fusion.jokers) do
@@ -151,7 +154,7 @@ function Card:can_fuse_card()
 			end
 		end
 	end 
-    return false
+  return false
 end
 
 function Card:get_card_fusion()
