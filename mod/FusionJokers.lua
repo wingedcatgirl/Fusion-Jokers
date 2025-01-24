@@ -117,6 +117,10 @@ local to_number = to_number or function(num)
 	return num
 end
 
+local to_big = to_big or function(num)
+	return num
+end
+
 local function has_joker(val, start_pos)
 	if not start_pos then
 		start_pos = 0
@@ -545,11 +549,11 @@ function SMODS.INIT.FusionJokers()
 	function SMODS.Jokers.j_diamond_bard.calculate(card, context)
 		if context.individual and context.cardarea == G.play and
 		context.other_card:is_suit('Diamonds') then
-			G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.money
+			G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + to_big(card.ability.extra.money)
 			G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
 			return {
 				dollars = card.ability.extra.money,
-				mult = card.ability.extra.mult * (1 + math.floor(G.GAME.dollars / card.ability.extra.money_threshold)),
+				mult = card.ability.extra.mult * (1 + math.floor(to_number(G.GAME.dollars) / card.ability.extra.money_threshold)),
 				card = card
 			}
 		end
