@@ -714,7 +714,7 @@ function SMODS.INIT.FusionJokers()
 	end
 
 	function SMODS.Jokers.j_big_bang.calculate(card, context)
-		if context.cardarea == G.jokers and not context.after and not context.before and context.scoring_name then
+		if context.cardarea == G.jokers and context.joker_main and context.scoring_name then
 			local mult_val = 1 + card.ability.extra.Xmult * (G.GAME.hands[context.scoring_name].level + G.GAME.hands[context.scoring_name].played)
 			return {
 				message = localize{type='variable',key='a_xmult',vars={mult_val}},
@@ -791,7 +791,7 @@ function SMODS.INIT.FusionJokers()
              end)}))
 		end
 
-		if context.cardarea == G.jokers and card.ability.mult > 0 and not context.after and not context.before then
+		if context.cardarea == G.jokers and card.ability.mult > 0 and context.joker_main then
 			return {
 				message = localize{type='variable',key='a_mult',vars={card.ability.mult}},
 				mult_mod = card.ability.mult
@@ -888,7 +888,7 @@ function SMODS.INIT.FusionJokers()
 			
 		end
 
-		if context.cardarea == G.jokers and not context.after and not context.before then
+		if context.cardarea == G.jokers and context.joker_main then
 			if card.ability.extra.side == "mult" then
 				return {
 					message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
@@ -994,7 +994,7 @@ function SMODS.INIT.FusionJokers()
 			end
 		end
 
-		if context.cardarea == G.jokers and not context.after and not context.before then
+		if context.cardarea == G.jokers and context.joker_main then
 			local x = 0
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].ability.set == 'Joker' then x = x + 1 end
@@ -1091,7 +1091,7 @@ function SMODS.INIT.FusionJokers()
 			end
 		end
 
-		if context.cardarea == G.jokers and not context.after and not context.before then
+		if context.cardarea == G.jokers and context.joker_main then
 			local mult = card.ability.mult * G.GAME.current_round.discards_left
 			return {
 				message = localize{type='variable',key='a_mult',vars={mult}},
@@ -1184,7 +1184,7 @@ function SMODS.INIT.FusionJokers()
 			end
 		end
 
-		if context.cardarea == G.jokers and not context.before and not context.after then
+		if context.cardarea == G.jokers and context.joker_main then
 			return {
 				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.total}},
 				Xmult_mod = card.ability.extra.total
