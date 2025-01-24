@@ -33,7 +33,7 @@ When you have a fusable joker, pressing on it will show a **"fuse" button**. Whe
 
 <img width=500px src="art/jokers_tab.png?raw=true" alt="Showcase of jokers tab 5"></a>
 
-The are a total of 15 fusions added in the mod, with more coming in the future!
+There are a total of 15 fusions added in the mod!
 
 You can find a list of their abilities, as well as the jokers needed to make them, in this link: https://itayfeder.github.io/Fusion-Jokers/
 
@@ -51,4 +51,5 @@ Developers can call the function `FusionJokers.fusions:add_fusion()` to register
 
 ## 🎉 Credits <a name = "credits"></a>
 
-- The mod was written by [**Itayfeder**](https://github.com/stars/itayfeder/lists/balatro-modding), with art created by [**Lyman**](https://github.com/spikeof2010)
+- The original mod was written by [**Itayfeder**](https://github.com/stars/itayfeder/lists/balatro-modding), with art created by [**Lyman**](https://github.com/spikeof2010)
+- [**elbe**](https://github.com/lshtech) did several patches to handle breaking changes in Steamodded, as well as various other features
