@@ -6,6 +6,7 @@
 --- BADGE_COLOUR: B26CBB
 --- PRIORITY: -10000
 --- PREFIX: fuse
+--- DEPENDENCIES: [Steamodded>=1.0.0~ALPHA-1307d]
 --- CONFLICTS: [Talisman<=2.0]
 ----------------------------------------------
 ------------MOD CODE -------------------------
