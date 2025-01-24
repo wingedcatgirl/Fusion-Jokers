@@ -750,7 +750,7 @@ function SMODS.INIT.FusionJokers()
 
 	function SMODS.Jokers.j_dynamic_duo.calculate(card, context)
 		if context.individual and context.cardarea == G.play and
-		not context.other_card:is_face() then
+		not context.other_card:is_face() and not SMODS.has_no_rank(context.other_card) then
 			return {
 				mult = card.ability.extra.mult,
 				chips = card.ability.extra.chips,
