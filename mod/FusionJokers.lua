@@ -6,6 +6,7 @@
 --- BADGE_COLOUR: B26CBB
 --- PRIORITY: -10000
 --- PREFIX: fuse
+--- CONFLICTS: [Talisman<=2.0]
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
