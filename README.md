@@ -22,6 +22,7 @@
 
 - [About](#about)
 - [How to Download](#how_to_download)
+- [Config](#config)
 - [Fusion API (For Developers)](#fusion_api)
 - [Credits](#credits)
 
@@ -42,6 +43,10 @@ You can find a list of their abilities, as well as the jokers needed to make the
 - The mod requires Steamodded. You can see info about how to use it [here](https://github.com/Steamopollys/Steamodded)
 - Download the latest release of Fusion Jokers
 - Extract the downloaded mod to the Mods folder (at %appdata%/Balatro/Mods)
+
+## ⚙️ Config <a name = "config"></a>
+
+- '''Block used components from reappearing''': Jokers used in a fusion cannot reappear if the fusion is present. Currently only applies to Fusion Jokers fusions; cross-mod functionality is planned. Default true.
 
 ## ➕ Fusion API (For Developers) <a name = "fusion_api"></a>
 

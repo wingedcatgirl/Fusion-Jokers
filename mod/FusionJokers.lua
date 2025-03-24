@@ -81,6 +81,9 @@ FusionJokers.fusions = {
 	}, result_joker = "j_camping_trip", cost = 10 },
 }
 
+FusionJokers.fusionconfig = SMODS.current_mod.config
+SMODS.load_file('configui.lua')()
+
 for _, fusion in ipairs(FusionJokers.fusions) do
     local fused = fusion.result_joker
 
