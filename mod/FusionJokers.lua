@@ -93,6 +93,7 @@ for _, fusion in ipairs(FusionJokers.fusions) do
         SMODS.Joker:take_ownership(component_name, {
             in_pool = function(self, args)
                 if #SMODS.find_card('j_showman') > 0 then return true end -- Allow finding copies if Showman is present
+				if not FusionJokers.fusionconfig.block_components then return true end --If the option is disabled, don't do the check
                 if #SMODS.find_card(fused) > 0 then return false end -- If the fused Joker exists, remove both components
                 return true
             end
