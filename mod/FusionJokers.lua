@@ -81,6 +81,23 @@ FusionJokers.fusions = {
 	}, result_joker = "j_camping_trip", cost = 10 },
 }
 
+for _, fusion in ipairs(FusionJokers.fusions) do
+    local fused = fusion.result_joker
+
+    for _, component in ipairs(fusion.jokers) do
+        local component_name = component.name
+
+        SMODS.Joker:take_ownership(component_name, {
+            in_pool = function(self, args)
+                if #SMODS.find_card('j_showman') > 0 then return true end -- Allow finding copies if Showman is present
+                if #SMODS.find_card(fused) > 0 then return false end -- If the fused Joker exists, remove both components
+                return true
+            end
+        }, true) -- silent | suppresses mod badge
+    end
+end
+
+
 local rarity = SMODS.Rarity{
 	key = "fusion",
 	loc_txt = {
