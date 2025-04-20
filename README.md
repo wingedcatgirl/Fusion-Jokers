@@ -41,7 +41,7 @@ You can find a list of their abilities, as well as the jokers needed to make the
 ## ⬇ How to Download <a name = "how_to_download"></a>
 
 - The mod requires Steamodded. You can see info about how to use it [here](https://github.com/Steamopollys/Steamodded)
-- Download the latest release of Fusion Jokers
+- Download the latest commit of Fusion Jokers from the green "Code" button up there
 - Extract the downloaded mod to the Mods folder (at %appdata%/Balatro/Mods)
 
 ## ⚙️ Config <a name = "config"></a>
