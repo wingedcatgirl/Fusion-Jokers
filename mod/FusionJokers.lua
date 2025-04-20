@@ -134,11 +134,11 @@ SMODS.load_file('jokers/uncannyface.lua')()
 SMODS.load_file('jokers/commercialdriver.lua')()
 SMODS.load_file('jokers/campingtrip.lua')()
 
-local to_number = to_number or function(num)
+to_number = to_number or function(num)
 	return num
 end
 
-local to_big = to_big or function(num)
+to_big = to_big or function(num)
 	return num
 end
 
