@@ -402,14 +402,6 @@ end
 
 
 
-local flip = {
-    x = 0,
-    y = 0
-}
-local flop = {
-    x = 0,
-    y = 1
-}
 local updateref = Card.update
 function Card:update(dt)
   updateref(self, dt)
