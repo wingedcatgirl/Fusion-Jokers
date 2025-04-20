@@ -40,6 +40,12 @@ SMODS.Joker {
             }
         }
     end,
+    add_to_deck = function(self, from_debuff)
+        G.consumeables:change_size(self.ability.extra.slots)
+    end,
+    remove_from_deck = function(self, from_debuff)
+        G.consumeables:change_size(-self.ability.extra.slots)
+    end,
     calculate = function(self, card, context)
         if context.individual and
         context.cardarea == G.play and

@@ -23,9 +23,9 @@ SMODS.Joker {
     config = {
         extra = {
             per_reroll = 2,
-            free = 1, 
+            free = 1,
             mult = 0,
-            joker1 = "j_chaos", 
+            joker1 = "j_chaos",
             joker2 = "j_flash"
         }
     },
@@ -40,6 +40,16 @@ SMODS.Joker {
             }
         }
     end,
+    add_to_deck = function(self, from_debuff)
+        if not from_debuff then -- no gameplan shenanigans for bunco enjoyers :p 
+            G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + self.ability.extra.free
+            calculate_reroll_cost(true)
+        end
+    end,
+    remove_from_deck = function(self, from_debuff)
+        G.GAME.current_round.free_rerolls = math.max(G.GAME.current_round.free_rerolls - self.ability.extra.free, 0)
+        calculate_reroll_cost(true)
+    end,
     set_ability = function(self, card, initial, delay_sprites)
         if card.ability.mult and (card.ability.extra.mult == 0) then
             card.ability.extra.mult = card.ability.mult
@@ -47,6 +57,12 @@ SMODS.Joker {
         end
     end,
     calculate = function(self, card, context)
+        if context.starting_shop then
+            G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls or 0
+            G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + card.ability.extra.free
+            calculate_reroll_cost(true)
+        end
+
 		if context.reroll_shop and not context.blueprint then
 			card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.per_reroll
             G.E_MANAGER:add_event(Event({

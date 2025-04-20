@@ -71,6 +71,22 @@ SMODS.Joker {
             card:set_sprites(flipref)
         end
     end,
+    add_to_deck = function(self, from_debuff)
+        if self.ability.extra.side == "mult" then
+            G.hand:change_size(self.ability.extra.hands)
+        else
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards + self.ability.extra.discards
+            ease_discard(self.ability.extra.discards)
+        end
+    end,
+    remove_from_deck = function(self, from_debuff)
+        if self.ability.extra.side == "mult" then
+            G.hand:change_size(-self.ability.extra.hands)
+        else
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards - self.ability.extra.discards
+            ease_discard(-self.ability.extra.discards)
+        end
+    end,
     calculate = function(self, card, context)
         local flipref = card.config.center
         if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
