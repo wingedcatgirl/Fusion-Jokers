@@ -36,7 +36,7 @@ SMODS.Joker {
             }
         }
     end,
-    set_ability = function(self, card, initial, delay_sprites)
+    add_to_deck = function (self, card, from_debuff)
         card:set_cost()
     end,
 	calc_dollar_bonus = function(self, card)
