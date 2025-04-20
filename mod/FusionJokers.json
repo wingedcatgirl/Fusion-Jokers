@@ -1,0 +1,19 @@
+{
+	"id": "FusionJokers",
+	"name": "Fusion Jokers",
+	"display_name": "Fusion Jokers",
+	"author": ["itayfeder", "Lyman"],
+	"description": "Adds the ability to fuse jokers into special new jokers!",
+	"prefix": "fuse",
+	"main_file": "FusionJokers.lua",
+	"priority": -10000,
+	"badge_colour": "B26CBB",
+	"badge_text_colour": "FFFFFF",
+	"version": "1.0.0",
+	"dependencies": [
+        "Steamodded (>=1.0.0~ALPHA-1307d)",
+    ],
+    "conflicts": [
+        "Talisman (<=2.0)",
+    ],
+}
