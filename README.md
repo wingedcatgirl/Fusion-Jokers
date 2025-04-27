@@ -46,7 +46,7 @@ You can find a list of their abilities, as well as the jokers needed to make the
 
 ## ⚙️ Config <a name = "config"></a>
 
-- **Block used components from reappearing**: Jokers used in a fusion cannot reappear if the fusion is present. Currently only applies to Fusion Jokers fusions; cross-mod functionality is planned. Default true.
+- **Block used components from reappearing**: Jokers used in a fusion cannot reappear if the fusion is present (unless Showman is also present). Currently only applies to Fusion Jokers fusions; cross-mod functionality is planned. Default true.
 
 ## ➕ Fusion API (For Developers) <a name = "fusion_api"></a>
 
