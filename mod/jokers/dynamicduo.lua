@@ -22,16 +22,16 @@ SMODS.Joker {
     blueprint_compat = true,
     config = {
         extra = {
-            mult = 4, 
-            chips = 30, 
-            joker1 = "j_even_steven", 
+            mult = 4,
+            chips = 31,
+            joker1 = "j_even_steven",
             joker2 = "j_odd_todd"
         }
     },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.mult, 
+                card.ability.extra.mult,
                 card.ability.extra.chips,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}
