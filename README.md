@@ -54,6 +54,20 @@ The mod adds a way for other developers to create their own fusions!
 
 Developers can call the function `FusionJokers.fusions:add_fusion()` to register their own fusion to the game. The function also allows them to determine carried stats between the component jokers and the fusion joker.
 
+```lua
+FusionJokers.fusions:add_fusion(
+  joker1,       --string, component joker's key
+  carry_stat1,  --string, name of stat to carry into fusion
+  extra1,       --boolean, is the carry stat in an "extra" table or not
+  joker2,       --
+  carry_stat2,  -- same as 1, but for the other component joker
+  extra2,       --
+  result_joker, --result of fusion 
+  cost,         --cost to fuse
+  merged_stat, merge_stat1, merge_stat2, merge_extra --TODO explain these
+)
+```
+
 ## 🎉 Credits <a name = "credits"></a>
 
 - The original mod was written by [**Itayfeder**](https://github.com/stars/itayfeder/lists/balatro-modding), with art created by [**Lyman**](https://github.com/spikeof2010)
