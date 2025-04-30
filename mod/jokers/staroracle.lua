@@ -1,4 +1,4 @@
-FusionJokers.fusions:add_fusion("j_envious_joker", nil, false, "j_star_ruby", nil, false, "j_fuse_star_oracle", 12)
+FusionJokers.fusions:add_fusion("j_six_envious_joker", nil, false, "j_six_star_ruby", nil, false, "j_fuse_star_oracle", 12)
 
 SMODS.Atlas {
     key = 'star_oracle',
@@ -26,8 +26,8 @@ SMODS.Joker {
         extra = {
 			odds = 10,
             slots = 2, 
-            joker1 = "j_envious_joker", 
-            joker2 = "j_star_ruby",
+            joker1 = "j_six_envious_joker", 
+            joker2 = "j_six_star_ruby",
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -40,11 +40,11 @@ SMODS.Joker {
             }
         }
     end,
-    add_to_deck = function(self, from_debuff)
-        G.consumeables:change_size(self.ability.extra.slots)
+    add_to_deck = function(self, card, from_debuff)
+        G.consumeables:change_size(card.ability.extra.slots)
     end,
-    remove_from_deck = function(self, from_debuff)
-        G.consumeables:change_size(-self.ability.extra.slots)
+    remove_from_deck = function(self, card, from_debuff)
+        G.consumeables:change_size(-card.ability.extra.slots)
     end,
     calculate = function(self, card, context)
         if context.individual and

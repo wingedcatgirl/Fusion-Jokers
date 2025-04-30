@@ -1,4 +1,4 @@
-FusionJokers.fusions:add_fusion("j_slothful_joker", nil, false, "j_rainbow_moonstone", nil, false, "j_fuse_moon_marauder", 12)
+FusionJokers.fusions:add_fusion("j_six_slothful_joker", nil, false, "j_six_moonstone", nil, false, "j_fuse_moon_marauder", 12)
 
 SMODS.Atlas {
     key = 'moon_marauder',
@@ -25,8 +25,8 @@ SMODS.Joker {
     config = {
         extra = {
             odds = 3,
-            joker1 = "j_slothful_joker",
-            joker2 = "j_rainbow_moonstone"
+            joker1 = "j_six_slothful_joker",
+            joker2 = "j_six_moonstone"
         }
     },
     loc_vars = function(self, info_queue, card)

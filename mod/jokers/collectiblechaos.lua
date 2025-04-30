@@ -40,14 +40,14 @@ SMODS.Joker {
             }
         }
     end,
-    add_to_deck = function(self, from_debuff)
+    add_to_deck = function(self, card, from_debuff)
         if not from_debuff then -- no gameplan shenanigans for bunco enjoyers :p 
-            G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + self.ability.extra.free
+            G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + card.ability.extra.free
             calculate_reroll_cost(true)
         end
     end,
-    remove_from_deck = function(self, from_debuff)
-        G.GAME.current_round.free_rerolls = math.max(G.GAME.current_round.free_rerolls - self.ability.extra.free, 0)
+    remove_from_deck = function(self, card, from_debuff)
+        G.GAME.current_round.free_rerolls = math.max(G.GAME.current_round.free_rerolls - card.ability.extra.free, 0)
         calculate_reroll_cost(true)
     end,
     set_ability = function(self, card, initial, delay_sprites)

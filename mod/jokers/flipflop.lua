@@ -71,20 +71,20 @@ SMODS.Joker {
             card:set_sprites(flipref)
         end
     end,
-    add_to_deck = function(self, from_debuff)
-        if self.ability.extra.side == "mult" then
-            G.hand:change_size(self.ability.extra.hands)
+    add_to_deck = function(self, card, from_debuff)
+        if card.ability.extra.side == "mult" then
+            G.hand:change_size(card.ability.extra.hands)
         else
-            G.GAME.round_resets.discards = G.GAME.round_resets.discards + self.ability.extra.discards
-            ease_discard(self.ability.extra.discards)
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.extra.discards
+            ease_discard(card.ability.extra.discards)
         end
     end,
-    remove_from_deck = function(self, from_debuff)
-        if self.ability.extra.side == "mult" then
-            G.hand:change_size(-self.ability.extra.hands)
+    remove_from_deck = function(self, card, from_debuff)
+        if card.ability.extra.side == "mult" then
+            G.hand:change_size(-card.ability.extra.hands)
         else
-            G.GAME.round_resets.discards = G.GAME.round_resets.discards - self.ability.extra.discards
-            ease_discard(-self.ability.extra.discards)
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.extra.discards
+            ease_discard(-eval_card.ability.extra.discards)
         end
     end,
     calculate = function(self, card, context)
