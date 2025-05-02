@@ -84,7 +84,7 @@ SMODS.Joker {
             G.hand:change_size(-card.ability.extra.hands)
         else
             G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.extra.discards
-            ease_discard(-eval_card.ability.extra.discards)
+            ease_discard(-card.ability.extra.discards)
         end
     end,
     calculate = function(self, card, context)
