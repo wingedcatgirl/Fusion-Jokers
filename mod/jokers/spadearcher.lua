@@ -47,7 +47,7 @@ SMODS.Joker {
 			}
 		end
 
-		if context.before and context.cardarea == G.jokers then
+		if context.before and context.cardarea == G.jokers and not context.blueprint then
 			local spades = 0
 			for k, v in ipairs(context.scoring_hand) do
 				if v:is_suit('Spades') then
