@@ -37,7 +37,7 @@ return {
 				["text"] = {
                     "Played cards with {C:spades}Spade{} suit give",
                     "{C:chips}+#1#{} Chips when scored. Gains {C:chips}+#2#{} ",
-                    "chips when 5 {C:spades}Spades{} are played",
+                    "chips when 5 or more {C:spades}Spades{} are played",
                     "{C:inactive}(#3# + #4#)",
 				},
 			},

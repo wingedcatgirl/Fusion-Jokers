@@ -54,7 +54,7 @@ SMODS.Joker {
 					spades = spades + 1
 				end
 			end
-			if spades == 5 then
+			if spades >= 5 then
 				card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
 				return {
 					message = localize('k_upgrade_ex'),
