@@ -51,6 +51,30 @@ SMODS.Joker {
 				colour = G.C.MONEY
 			}
 		end
+    end,
+    joker_display_def = function(JokerDisplay)
+        return {
+            text = {
+                { text = "+$" },
+                { ref_table = "card.ability.extra", ref_value = "dollars" },
+                { text = " /round" },
+            },
+            text_config = { colour = G.C.GOLD },
+            reminder_text = {
+                { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+            },
+            calc_function = function(card)
+                card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+            end,
+            reminder_text = {
+                { text = "(" },
+                { text = "$",          colour = G.C.GOLD },
+                { ref_table = "card", ref_value = "sell_cost", colour = G.C.GOLD },
+                { text = " Sell Value", colour = G.C.GOLD },
+                { text = ")" },
+            },
+            reminder_text_config = { scale = 0.35 }
+        }
     end
 }
 

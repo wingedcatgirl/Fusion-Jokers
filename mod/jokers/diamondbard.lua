@@ -51,6 +51,40 @@ SMODS.Joker {
 				card = card
 			}
 		end
+    end,
+    joker_display_def = function(JokerDisplay)
+        return {
+            text = {
+                { text = "+", colour = G.C.MULT },
+                { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult", colour = G.C.MULT },
+                { text = ", " },
+                { text = "+$", colour = G.C.GOLD },
+                { ref_table = "card.joker_display_values", ref_value = "dollars", retrigger_type = "mult", colour = G.C.GOLD },
+            },
+            reminder_text = {
+                { text = "(" },
+                { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = lighten(G.C.SUITS["Diamonds"], 0.35) },
+                { text = ")" }
+            },
+            calc_function = function(card)
+                local mult = 0
+                local dollars = 0
+                local text, _, scoring_hand = JokerDisplay.evaluate_hand()
+                if text ~= 'Unknown' then
+                    for _, scoring_card in pairs(scoring_hand) do
+                        if scoring_card:is_suit("Diamonds") then
+                            mult = mult +
+                                card.ability.extra.mult * (1 + math.floor(to_number(G.GAME.dollars) / card.ability.extra.money_threshold)) * JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+                            dollars = dollars +
+                                card.ability.extra.money * JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+                        end
+                    end
+                end
+                card.joker_display_values.mult = mult
+                card.joker_display_values.dollars = dollars
+                card.joker_display_values.localized_text = localize("Diamonds", 'suits_plural')
+            end
+        }
     end
 }
 

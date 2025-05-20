@@ -64,6 +64,29 @@ SMODS.Joker {
 				mult_mod = x*card.ability.extra.mult
 			}
 		end
+    end,
+    joker_display_def = function(JokerDisplay)
+        return {
+            text = {
+                { text = "+" },
+                { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
+            },
+            extra = {
+                {
+                    { ref_table = "card.joker_display_values", ref_value = "odds" },
+                }
+            },
+            extra_config = { colour = G.C.GREEN, scale = 0.3 },
+            text_config = { colour = G.C.MULT },
+            calc_function = function(card)
+                card.joker_display_values.mult = (G.jokers and G.jokers.cards and #G.jokers.cards or 0) * card.ability.extra.mult
+                if card.edition and card.edition.negative then
+                    card.joker_display_values.odds = ""
+                else
+                    card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+                end
+            end
+        }
     end
 }
 

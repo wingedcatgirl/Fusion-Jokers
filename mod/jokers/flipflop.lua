@@ -44,6 +44,8 @@ SMODS.Joker {
             result = {
                 card.ability.extra.hands,
                 card.ability.extra.mult,
+                card.ability.extra.discards,
+                card.ability.extra.chips,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}
                 }
@@ -51,6 +53,8 @@ SMODS.Joker {
             result = {
                 card.ability.extra.discards,
                 card.ability.extra.chips,
+                card.ability.extra.hands,
+                card.ability.extra.mult,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}
                 }
@@ -145,6 +149,23 @@ SMODS.Joker {
 				}
 			end
 		end
+    end,
+    joker_display_def = function(JokerDisplay)
+        return {
+            text = {
+                { ref_table = "card.joker_display_values", ref_value = "chips", retrigger_type = "mult", colour = G.C.CHIPS },
+                { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult", colour = G.C.MULT },
+            },
+            calc_function = function(card)
+                if card.ability.extra.side == "mult" then
+                    card.joker_display_values.chips = ""
+                    card.joker_display_values.mult = "+" .. card.ability.extra.mult
+                else
+                    card.joker_display_values.chips = "+" .. card.ability.extra.chips
+                    card.joker_display_values.mult = ""
+                end
+            end
+        }
     end
 }
 

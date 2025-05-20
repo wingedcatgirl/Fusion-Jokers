@@ -44,6 +44,23 @@ SMODS.Joker {
                 Xmult_mod = mult_val
 			}
 		end
+    end,
+    joker_display_def = function(JokerDisplay)
+        return {
+            text = {
+                {
+                    border_nodes = {
+                        { text = "X" },
+                        { ref_table = "card.joker_display_values", ref_value = "Xmult", retrigger_type = "exp" }
+                    }
+                }
+            },
+            calc_function = function(card)
+                local text, _, _ = JokerDisplay.evaluate_hand()
+                card.joker_display_values.Xmult = 1 + card.ability.extra.Xmult * ((text ~= 'Unknown' and G.GAME and G.GAME.hands[text] and G.GAME.hands[text].level + G.GAME.hands[text].played + (next(G.play.cards) and 0 or 1)) or
+                0)
+            end
+        }
     end
 }
 
