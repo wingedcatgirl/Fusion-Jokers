@@ -72,6 +72,13 @@ SMODS.Joker {
                 card.joker_display_values.localized_text = localize("Clubs", 'suits_plural')
             end
         }
+    end,
+	update = function(self, card, dt)
+        if G.SETTINGS.colourblind_option then
+            card.children.center:set_sprite_pos({ x = 1, y = 0})
+        else
+            card.children.center:set_sprite_pos({ x = 0, y = 0})
+        end
     end
 }
 
