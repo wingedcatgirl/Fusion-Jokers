@@ -64,6 +64,18 @@ SMODS.Joker {
 				Xmult_mod = card.ability.extra.total
 			}
 		end
+    end,
+    joker_display_def = function(JokerDisplay)
+        return {
+            text = {
+                {
+                    border_nodes = {
+                        { text = "X" },
+                        { ref_table = "card.ability.extra", ref_value = "total" }
+                    }
+                }
+            }
+        }
     end
 }
 

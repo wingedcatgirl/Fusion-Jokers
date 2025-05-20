@@ -44,6 +44,41 @@ SMODS.Joker {
 				card = card
 			}
 		end
+    end,
+    joker_display_def = function(JokerDisplay)
+        return {
+            text = {
+                { text = "+" },
+                { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" },
+            },
+            text_config = { colour = G.C.MULT },
+            reminder_text = {
+                { text = "(" },
+                { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = lighten(G.C.SUITS["Clubs"], 0.35) },
+                { text = ")" }
+            },
+            calc_function = function(card)
+                local mult = 0
+                local text, _, scoring_hand = JokerDisplay.evaluate_hand()
+                if text ~= 'Unknown' then
+                    for _, scoring_card in pairs(scoring_hand) do
+                        if scoring_card:is_suit("Clubs") then
+                            mult = mult +
+                                card.ability.extra.mult * JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+                        end
+                    end
+                end
+                card.joker_display_values.mult = mult
+                card.joker_display_values.localized_text = localize("Clubs", 'suits_plural')
+            end
+        }
+    end,
+	update = function(self, card, dt)
+        if G.SETTINGS.colourblind_option then
+            card.children.center:set_sprite_pos({ x = 1, y = 0})
+        else
+            card.children.center:set_sprite_pos({ x = 0, y = 0})
+        end
     end
 }
 

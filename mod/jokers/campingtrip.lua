@@ -60,6 +60,24 @@ SMODS.Joker {
 				card = card
 			}
 		end
+    end,
+    joker_display_def = function(JokerDisplay)
+        return {
+            reminder_text = {
+                { text = "(" },
+                { ref_table = "card.joker_display_values", ref_value = "active" },
+                { text = ")" },
+            },
+            calc_function = function(card)
+                card.joker_display_values.active = G.GAME and G.GAME.current_round.hands_left <= 1 and
+                    localize("jdis_active") or localize("jdis_inactive")
+            end,
+            retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+                if held_in_hand then return 0 end
+                return G.GAME and G.GAME.current_round.hands_left <= 1 and
+                joker_card.ability.extra * JokerDisplay.calculate_joker_triggers(joker_card) or 0
+            end
+        }
     end
 }
 
