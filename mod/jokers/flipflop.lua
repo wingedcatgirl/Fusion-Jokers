@@ -44,8 +44,6 @@ SMODS.Joker {
             result = {
                 card.ability.extra.hands,
                 card.ability.extra.mult,
-                card.ability.extra.discards,
-                card.ability.extra.chips,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}
                 }
@@ -53,8 +51,6 @@ SMODS.Joker {
             result = {
                 card.ability.extra.discards,
                 card.ability.extra.chips,
-                card.ability.extra.hands,
-                card.ability.extra.mult,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}
                 }
