@@ -30,10 +30,11 @@ SMODS.Joker {
         }
     },
     loc_vars = function(self, info_queue, card)
+        local luck, odds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "fusion_moonmarauder_desc", false)
         return {
             vars = {
-                '' .. (G.GAME and G.GAME.probabilities.normal or 1),
-                card.ability.extra.odds,
+                luck,
+                odds,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}
             }
@@ -43,7 +44,7 @@ SMODS.Joker {
         if context.before and (context.cardarea == G.jokers) then
             local moons = {}
             for _, v in ipairs(context.full_hand) do
-                if v:is_suit('Moons') and not (v.ability.name == 'Glass Card') and pseudorandom('moon_marauder') < G.GAME.probabilities.normal / card.ability.extra.odds then
+                if v:is_suit('Moons') and not (v.ability.name == 'Glass Card') and SMODS.pseudorandom_probability(card, 'moon_marauder', 1, card.ability.extra.odds, 'moon_marauder') then
                     moons[#moons + 1] = v
                     v:set_ability(G.P_CENTERS.m_glass, nil, true)
                     G.E_MANAGER:add_event(Event({
