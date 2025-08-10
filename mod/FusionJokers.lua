@@ -312,6 +312,7 @@ function Card:fuse_card()
 			j_fusion:add_to_deck()
 			G.jokers:emplace(j_fusion)
 			play_sound('explosion_release1')
+			G.jokers:unhighlight_all()
 
 			delay(0.1)
 			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.3, blocking = false,
