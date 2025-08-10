@@ -29,11 +29,12 @@ SMODS.Joker {
         }
     },
     loc_vars = function(self, info_queue, card)
+        local luck, odds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "fusion_heartpaladin_desc", false)
         return {
             vars = {
                 card.ability.extra.Xmult,
-                ''..(G.GAME and G.GAME.probabilities.normal or 1), 
-                card.ability.extra.odds,
+                luck,
+                odds,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}
             }
@@ -50,7 +51,7 @@ SMODS.Joker {
 
 		if context.repetition and context.cardarea == G.play and
 		context.other_card:is_suit('Hearts') then
-			if pseudorandom('heart_paladin') < G.GAME.probabilities.normal/card.ability.extra.odds then
+			if SMODS.pseudorandom_probability(card, 'heart_paladin', 1, card.ability.extra.odds, 'heart_paladin') then
 				return {
 					message = localize('k_again_ex'),
 					repetitions = 1,
@@ -75,11 +76,12 @@ SMODS.Joker {
                 { text = ")" }
             },
             calc_function = function(card)
+                local luck, odds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "fusion_heartpaladin_desc", false)
                 local x_mult = 1
                 local text, _, scoring_hand = JokerDisplay.evaluate_hand()
                 local m = 1.5
                 card.joker_display_values.prefix = "X"
-                if G.GAME.probabilities.normal == 1 then
+                if luck < odds then
                     card.joker_display_values.prefix = "X ~"
                     m = 1.25
                 end

@@ -31,10 +31,11 @@ SMODS.Joker {
         }
     },
     loc_vars = function(self, info_queue, card)
+        local luck, odds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "fusion_staroracle_desc", false)
         return {
             vars = {
-                '' .. (G.GAME and G.GAME.probabilities.normal or 1),
-                card.ability.extra.odds,
+                luck,
+                odds,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}
             }
@@ -51,7 +52,7 @@ SMODS.Joker {
         context.cardarea == G.play and
         context.other_card:is_suit('Stars') and
         #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit and
-        pseudorandom('starruby') < G.GAME.probabilities.normal / card.ability.extra.odds then
+        SMODS.pseudorandom_probability(card, 'starruby', 1, card.ability.extra.odds, 'starruby') then
             G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
             G.E_MANAGER:add_event(Event({
                 trigger = 'before',

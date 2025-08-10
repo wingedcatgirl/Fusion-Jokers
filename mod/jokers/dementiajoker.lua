@@ -29,10 +29,11 @@ SMODS.Joker {
         }
     },
     loc_vars = function(self, info_queue, card)
+        local luck, odds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "fusion_dementia_desc", false)
         return {
             vars = {
                 card.ability.extra.mult,
-                ''..(G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds,
+                luck, odds,
                 (G.jokers and G.jokers.cards and #G.jokers.cards or 0)*card.ability.extra.mult,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}
@@ -41,7 +42,7 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
-			if pseudorandom('dementia_joker') < G.GAME.probabilities.normal/card.ability.extra.odds
+			if SMODS.pseudorandom_probability(card, 'dementia_joker', 1, card.ability.extra.odds, 'dementia_joker')
 			and not (card.edition and card.edition.negative) then
 				local card = copy_card(card, nil, nil, nil, card.edition and card.edition.negative)
 				card:set_edition({negative = true}, true)
@@ -79,11 +80,12 @@ SMODS.Joker {
             extra_config = { colour = G.C.GREEN, scale = 0.3 },
             text_config = { colour = G.C.MULT },
             calc_function = function(card)
+                local luck, odds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "fusion_dementia_desc", false)
                 card.joker_display_values.mult = (G.jokers and G.jokers.cards and #G.jokers.cards or 0) * card.ability.extra.mult
                 if card.edition and card.edition.negative then
                     card.joker_display_values.odds = ""
                 else
-                    card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+                    card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { luck, odds } }
                 end
             end
         }
