@@ -142,15 +142,15 @@ to_big = to_big or function(num)
 	return num
 end
 
-local function has_joker(val, start_pos)
+local function has_joker(val, start_pos, highlight_only)
 	if not start_pos then
-		start_pos = 0
+		start_pos = 1
 	end
 	for i,v in ipairs(G.jokers.highlighted) do
-		if v.ability.set == 'Joker' and v.config.center_key == val and i > start_pos then
-			
+		if v.ability.set == 'Joker' and v.config.center_key == val and i >= start_pos then
+
 			for ii, vv in ipairs(G.jokers.cards) do
-				if vv == v and ii > start_pos then
+				if vv == v and ii >= start_pos then
 					return ii
 				end
 			end
@@ -158,15 +158,18 @@ local function has_joker(val, start_pos)
 		end
 	end
 
-	for i, v in ipairs(G.jokers.cards) do
-		if v.ability.set == 'Joker' and v.config.center_key == val and i > start_pos then
-			return i
+	if not highlight_only then
+		for i, v in ipairs(G.jokers.cards) do
+			if v.ability.set == 'Joker' and v.config.center_key == val and i >= start_pos then
+				return i
+			end
 		end
 	end
 	return -1
 end
 
-function Card:can_fuse_card()
+function Card:can_fuse_card(juicing)
+	--[[
 	for _, fusion in ipairs(FusionJokers.fusions) do
 		if to_number(G.GAME.dollars) >= fusion.cost then
 			local found_me = false
@@ -191,22 +194,121 @@ function Card:can_fuse_card()
 			end
 		end
 	end
-  return false
+  	return false
+	--]]
+	local fusion = self:get_card_fusion()
+	if fusion.cost == "??" then return false end
+	if fusion.blocked and not juicing then return false end
+	return to_big(fusion.cost) <= to_big(G.GAME.dollars)
 end
 
-function Card:get_card_fusion()
+function Card:get_card_fusion(debug)
+	local dprint = function(msg)
+		if debug then print(msg) end
+	end
+	local function deep_copy(tbl)
+		if type(tbl) ~= "table" then return tbl end
+		local copy = {}
+		for k, v in pairs(tbl) do
+			copy[k] = deep_copy(v)
+		end
+		return copy
+	end
+	local results = {}
+	local held = {}
+	local affordable = {}
+	local result = {
+		result_joker = "Cannot fuse",
+		jokers = {
+			{name = self.config.center_key, extra_stat = false}
+		},
+		cost = "??"
+	}
+	local jokerspos = {}
 	for _, fusion in ipairs(FusionJokers.fusions) do
+		local valid = false
 		for _, joker in ipairs(fusion.jokers) do
 			if joker.name == self.config.center_key then
-				return fusion
+				for i,component in ipairs(fusion.jokers) do
+					local recipe = {}
+					recipe[component.name] = (recipe[component.name] or 0) + 1
+					--dprint(component.name.."s needed: "..tostring(recipe[component.name]))
+					--dprint(component.name.."s found: "..tostring(#SMODS.find_card(component.name)))
+					if #SMODS.find_card(component.name) >= recipe[component.name] then
+						valid = true
+					else
+						valid = false
+					end
+				end
+				if valid then
+					results[#results+1] = deep_copy(fusion)
+				end
+				break
 			end
 		end
 	end
-    return nil
+	if #results > 1 then
+		for i,recipe in ipairs(results) do
+			dprint("Checking if components for "..recipe.result_joker.." are owned")
+			jokerspos = {}
+			local valid = true
+			local startpos = {}
+			for ii,component in ipairs(recipe.jokers) do
+				startpos[component.name] = (startpos[component.name] or 1)
+				if has_joker(component.name, startpos[component.name]) ~= -1 then
+					startpos[component.name] = has_joker(component.name, startpos[component.name])
+					dprint(component.name.." is owned")
+					jokerspos[#jokerspos+1] = startpos[component.name]
+				else
+					valid = false
+					dprint(component.name.." is not owned")
+					break
+				end
+			end
+			if valid then held[#held+1] = deep_copy(results[i]) end
+		end
+		if #held == 1 then return held[1] end
+		if #held == 0 then return result end
+		for i,recipe in ipairs(held) do
+			dprint("Checking if components for "..recipe.result_joker.." are highlighted")
+			local valid = true
+			local startpos = {}
+			for ii,component in ipairs(recipe.jokers) do
+				startpos[component.name] = (startpos[component.name] or 1)
+				if has_joker(component.name, startpos[component.name], true) ~= -1 then
+					startpos[component.name] = has_joker(component.name, startpos[component.name], true)
+					dprint(component.name.." is highlighted")
+				else
+					valid = false
+					dprint(component.name.." is not highlighted")
+					break
+				end
+			end
+			if to_big(recipe.cost) < to_big(G.GAME.dollars) then
+				affordable[#affordable+1] = deep_copy(held[i])
+			end
+			if valid then result = held[i] break end --don't overhighlight :v
+		end
+	elseif #results == 1 then
+		result = results[1]
+	end
+	if #held > 1 and result.cost == "??" then
+		dprint("Picking a random possible fusion...")
+		local possible = #affordable > 0 and affordable or held
+		local pick = pseudorandom("fusetext", 1, #possible)
+		result = possible[pick]
+		result.blocked = true
+	else
+		dprint(result.blocked and "Result is blocked when it shouldn't be??" or "Result is not blocked (this is correct)")
+	end
+    return result
 end
 
 
-function Card:fuse_card()
+function Card:fuse_card(debug)
+	local dprint = function(msg)
+		if debug then print(msg) end
+	end
 	G.CONTROLLER.locks.selling_card = true
     stop_use()
     local area = self.area
@@ -222,12 +324,12 @@ function Card:fuse_card()
 		edition = self.edition
 	end
 
-	local chosen_fusion = nil
+
+	local chosen_fusion = self:get_card_fusion()
 	local joker_pos = {}
-	local found_me = false
-	for _, fusion in ipairs(FusionJokers.fusions) do
-		joker_pos = {}
-		found_me = false
+	do
+		local fusion = chosen_fusion
+		local found_me = false
 		for _, joker in ipairs(fusion.jokers) do
 			if fusion.jokers[1].name == fusion.jokers[2].name then
 				if #SMODS.find_card(joker.name) > 1 and #joker_pos == 0 then
@@ -243,9 +345,9 @@ function Card:fuse_card()
 			end
 		end
 
-		if #joker_pos == #fusion.jokers and found_me then
-			chosen_fusion = fusion
-			break
+		if not (#joker_pos == #fusion.jokers and found_me) then
+			dprint("Failed to find component Jokers when fusing?")
+			chosen_fusion = nil
 		end
 	end
 
@@ -427,13 +529,17 @@ function Card:update(dt)
 		local my_fusion = self:get_card_fusion()
 		self.fusion_cost = my_fusion.cost
 
-		if self:can_fuse_card() and not self.ability.fusion.jiggle then
-			juice_card_until(self, function(card) return (card:can_fuse_card()) end, true)
+		if self:can_fuse_card(true) and not self.ability.fusion.jiggle then
+			juice_card_until(self,
+			function(card)
+				return (card:can_fuse_card(true))
+			end,
+			true)
 
 			self.ability.fusion.jiggle = true
 		end
 
-		if not self:can_fuse_card() and self.ability.fusion.jiggle then
+		if not self:can_fuse_card(true) and self.ability.fusion.jiggle then
 			self.ability.fusion.jiggle = false
 		end
 	end
