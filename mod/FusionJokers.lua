@@ -146,6 +146,18 @@ local function has_joker(val, start_pos)
 	if not start_pos then
 		start_pos = 0
 	end
+	for i,v in ipairs(G.jokers.highlighted) do
+		if v.ability.set == 'Joker' and v.config.center_key == val and i > start_pos then
+			
+			for ii, vv in ipairs(G.jokers.cards) do
+				if vv == v and ii > start_pos then
+					return ii
+				end
+			end
+
+		end
+	end
+
 	for i, v in ipairs(G.jokers.cards) do
 		if v.ability.set == 'Joker' and v.config.center_key == val and i > start_pos then
 			return i
