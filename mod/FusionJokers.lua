@@ -458,6 +458,8 @@ end
 
 -- end
 
-
-
-
+SMODS.current_mod.reset_game_globals = function (init)
+	if init then
+		G.jokers.config.highlighted_limit = math.max(G.jokers.config.highlighted_limit, 1e300)
+	end
+end
