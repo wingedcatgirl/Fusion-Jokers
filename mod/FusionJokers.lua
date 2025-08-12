@@ -418,6 +418,7 @@ function Card:fuse_card(debug)
 					end
 				end
 				--G.jokers.cards[pos]:start_dissolve({G.C.GOLD})
+				G.jokers.cards[pos.pos].fused = true --Check for this if your on-card-removal function has an opinion on whether being fused counts as removal.
 				G.jokers.cards[pos.pos]:remove()
 			end
 
