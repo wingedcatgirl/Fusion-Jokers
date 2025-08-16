@@ -199,7 +199,7 @@ function Card:can_fuse_card(juicing)
 	local fusion = self:get_card_fusion()
 	if fusion.cost == "??" then return false end
 	if fusion.blocked and not juicing then return false end
-	return to_big(fusion.cost) <= to_big(G.GAME.dollars)
+	return (to_big(fusion.cost) + to_big(G.GAME.bankrupt_at or 0)) <= to_big(G.GAME.dollars)
 end
 
 function Card:get_card_fusion(debug)
@@ -218,7 +218,7 @@ function Card:get_card_fusion(debug)
 	local held = {}
 	local affordable = {}
 	local result = {
-		result_joker = "Cannot fuse",
+		result_joker = "No fusions",
 		jokers = {
 			{name = self.config.center_key, extra_stat = false}
 		},
@@ -226,16 +226,17 @@ function Card:get_card_fusion(debug)
 	}
 	local jokerspos = {}
 	for _, fusion in ipairs(FusionJokers.fusions) do
-		local valid = false
+		local valid = true
 		for _, joker in ipairs(fusion.jokers) do
 			if joker.name == self.config.center_key then
+				result.result_joker = "Cannot fuse"
 				for i,component in ipairs(fusion.jokers) do
 					local recipe = {}
 					recipe[component.name] = (recipe[component.name] or 0) + 1
-					--dprint(component.name.."s needed: "..tostring(recipe[component.name]))
-					--dprint(component.name.."s found: "..tostring(#SMODS.find_card(component.name)))
+					dprint(component.name.."s needed: "..tostring(recipe[component.name]))
+					dprint(component.name.."s found: "..tostring(#SMODS.find_card(component.name)))
 					if #SMODS.find_card(component.name) >= recipe[component.name] then
-						valid = true
+						valid = valid and true
 					else
 						valid = false
 					end
@@ -524,7 +525,7 @@ function Card:update(dt)
 
   if G.STAGE == G.STAGES.RUN then
 
-	if self:get_card_fusion() ~= nil then
+	if self.get_card_fusion and self:get_card_fusion().result_joker ~= "No fusions" then
 		self.ability.fusion = self.ability.fusion or {}
 
 		local my_fusion = self:get_card_fusion()
