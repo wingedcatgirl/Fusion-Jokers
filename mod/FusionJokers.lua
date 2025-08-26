@@ -107,6 +107,23 @@ SMODS.Joker.inject =function(self)
 end
 
 function FusionJokers.fusions:add_fusion(joker1, carry_stat1, extra1, joker2, carry_stat2, extra2, result_joker, cost, merged_stat, merge_stat1, merge_stat2, merge_extra)
+	if type(joker1) == "table" then
+		sendWarnMessage("add_fusion expects a list of parameters, not a table; passing table to register_fusion", "Fusion Jokers")
+		FusionJokers.fusions:register_fusion(joker1)
+	else table.insert(self,
+		{ jokers = {
+			{ name = joker1, carry_stat = carry_stat1, extra_stat = extra1, merge_stat = merge_stat1 },
+			{ name = joker2, carry_stat = carry_stat2, extra_stat = extra2, merge_stat = merge_stat2 }
+		}, result_joker = result_joker, cost = cost, merged_stat = merged_stat, merge_extra = merge_extra })
+	end
+end
+
+function FusionJokers.fusions:register_fusion(t)
+	if type(t) ~= "table" then
+		sendErrorMessage("Use add_fusion if you're passing a list of parameters; register_fusion needs a table", "Fusion Jokers")
+		return
+	end
+	local joker1, carry_stat1, extra1, joker2, carry_stat2, extra2, result_joker, cost, merged_stat, merge_stat1, merge_stat2, merge_extra = t.joker1, t.carry_stat1, t.extra1, t.joker2, t.carry_stat2, t.extra2, t.result_joker, t.cost, t.merged_stat, t.merge_stat1, t.merge_stat2, t.merge_extra
 	table.insert(self,
 		{ jokers = {
 			{ name = joker1, carry_stat = carry_stat1, extra_stat = extra1, merge_stat = merge_stat1 },
@@ -397,11 +414,16 @@ function Card:fuse_card(debug)
 				end
 				local check_joker = pos.joker
 				if check_joker.carry_stat then
+					dprint("There is a carry stat")
 					if check_joker.extra_stat then
 						j_fusion.ability.extra[check_joker.carry_stat] = G.jokers.cards[pos.pos].ability.extra[check_joker.carry_stat]
+						dprint("It is extra; its value is "..tostring(G.jokers.cards[pos.pos].ability.extra[check_joker.carry_stat]))
 					else
 						j_fusion.ability[check_joker.carry_stat] = G.jokers.cards[pos.pos].ability[check_joker.carry_stat]
+						dprint("It is not extra; its value is "..tostring(G.jokers.cards[pos.pos].ability[check_joker.carry_stat]))
 					end
+				else
+					dprint("There is not a carry stat")
 				end
 				if check_joker.merge_stat then
 					if chosen_fusion.merge_extra then
