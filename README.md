@@ -77,7 +77,7 @@ FusionJokers.fusions:add_fusion(
   nil,
   "j_golden",
   nil,
-  false,
+  nil,
   "j_fuse_golden_egg",
   12,
 )
