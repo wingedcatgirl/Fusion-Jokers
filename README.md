@@ -79,7 +79,7 @@ FusionJokers.fusions:add_fusion(
   nil,
   nil,
   "j_fuse_golden_egg",
-  12,
+  12
 )
 --is equivalent to:
 FusionJokers.fusions:register_fusion({
