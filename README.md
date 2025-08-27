@@ -62,10 +62,33 @@ FusionJokers.fusions:add_fusion(
   joker2,       --
   carry_stat2,  -- same as 1, but for the other component joker
   extra2,       --
-  result_joker, --result of fusion 
-  cost,         --cost to fuse
+  result_joker, --string, key of result joker
+  cost,         --number, cost to fuse
   merged_stat, merge_stat1, merge_stat2, merge_extra --TODO explain these
 )
+```
+
+Alternately, you can call `FusionJokers.fusions:register_fusion()` and pass the desired arguments as a table.
+
+```lua
+FusionJokers.fusions:add_fusion(
+  "j_egg",
+  "extra_value",
+  nil,
+  "j_golden",
+  nil,
+  false,
+  "j_fuse_golden_egg",
+  12,
+)
+--is equivalent to:
+FusionJokers.fusions:register_fusion({
+  joker1 = "j_egg",
+  carry_stat1 = "extra_value",
+  joker2 = "j_golden",
+  result_joker = "j_fuse_golden_egg",
+  cost = 12,
+})
 ```
 
 ## 🎉 Credits <a name = "credits"></a>
