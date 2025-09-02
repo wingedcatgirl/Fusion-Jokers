@@ -383,10 +383,7 @@ function Card:fuse_card(debug)
 		delay(0.2)
 		G.E_MANAGER:add_event(Event({trigger = 'immediate',func = function()
 			ease_dollars(-chosen_fusion.cost)
-			local j_fusion = create_card('Joker', G.jokers, nil, nil, nil, nil, chosen_fusion.result_joker, nil)
-			if edition and not j_fusion.edition then
-				j_fusion.edition = edition
-			end
+			local j_fusion = SMODS.create_card({set = "Joker", area = G.jokers, key = chosen_fusion.result_joker, edition = edition})
 			table.sort(joker_pos, function (a, b)
 				return a.pos > b.pos
 			end)
