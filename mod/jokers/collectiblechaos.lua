@@ -51,10 +51,14 @@ SMODS.Joker {
         calculate_reroll_cost(true)
     end,
     set_ability = function(self, card, initial, delay_sprites)
-        if card.ability.mult and (card.ability.extra.mult == 0) then
-            card.ability.extra.mult = card.ability.mult
-            card.ability.mult = nil
-        end
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.3, blocking = false,
+			func = function()
+                if card.ability.mult and (card.ability.extra.mult == 0) then
+                    card.ability.extra.mult = card.ability.mult or 0
+                    card.ability.mult = nil
+                end
+			return true
+			end}))
     end,
     calculate = function(self, card, context)
         if context.starting_shop and not context.blueprint then
