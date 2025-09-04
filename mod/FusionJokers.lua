@@ -214,9 +214,9 @@ function Card:can_fuse_card(juicing)
   	return false
 	--]]
 	local fusion = self:get_card_fusion()
-	if fusion.cost == "??" then return false end
-	if fusion.blocked and not juicing then return false end
-	return (to_big(fusion.cost) + to_big(G.GAME.bankrupt_at or 0)) <= to_big(G.GAME.dollars)
+	if fusion.cost == "??" then return false, fusion end
+	if fusion.blocked and not juicing then return false, fusion end
+	return (to_big(fusion.cost) + to_big(G.GAME.bankrupt_at or 0)) <= to_big(G.GAME.dollars), fusion
 end
 
 function Card:get_card_fusion(debug)
@@ -302,7 +302,7 @@ function Card:get_card_fusion(debug)
 					break
 				end
 			end
-			if to_big(recipe.cost) < to_big(G.GAME.dollars) then
+			if (to_big(recipe.cost) + to_big(G.GAME.bankrupt_at or 0)) < to_big(G.GAME.dollars) then
 				affordable[#affordable+1] = deep_copy(held[i])
 			end
 			if valid then result = held[i] break end --don't overhighlight :v
@@ -543,14 +543,13 @@ function Card:update(dt)
   updateref(self, dt)
 
   if G.STAGE == G.STAGES.RUN then
+	local fuseable, my_fusion  = self:can_fuse_card(true)
 
-	if self.get_card_fusion and self:get_card_fusion().result_joker ~= "No fusions" then
+	if my_fusion and my_fusion.result_joker ~= "No fusions" then
 		self.ability.fusion = self.ability.fusion or {}
-
-		local my_fusion = self:get_card_fusion()
 		self.fusion_cost = my_fusion.cost
 
-		if self:can_fuse_card(true) and not self.ability.fusion.jiggle then
+		if fuseable and not self.ability.fusion.jiggle then
 			juice_card_until(self,
 			function(card)
 				return (card:can_fuse_card(true))
@@ -560,7 +559,7 @@ function Card:update(dt)
 			self.ability.fusion.jiggle = true
 		end
 
-		if not self:can_fuse_card(true) and self.ability.fusion.jiggle then
+		if not fuseable and self.ability.fusion.jiggle then
 			self.ability.fusion.jiggle = false
 		end
 	end
