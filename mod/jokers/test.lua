@@ -1,3 +1,6 @@
+local dp = not not next(SMODS.find_mod("DebugPlus"))
+if not dp then return nil end
+
 FusionJokers.fusions:register_fusion{
     jokers = {
         { name = "j_joker", merge_stat = "mult" },
@@ -7,10 +10,6 @@ FusionJokers.fusions:register_fusion{
     result_joker = "j_fuse_three_jimbos",
     merged_stat = "mult",
     cost = 2,
-    requirement = function ()
-        local dp = not not next(SMODS.find_mod("DebugPlus"))
-        return dp
-    end
 }
 
 SMODS.Atlas{
