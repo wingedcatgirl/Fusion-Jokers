@@ -65,7 +65,7 @@ FusionJokers.fusions:register_fusion{
       --Second component Joker; same values.
       --This works for arbitrary numbers of additional Jokers
       --if you want to do the Exodia thing.
-  }
+  },
   result_joker = "j_modprefix_key", --String, key of result Joker
   cost = number,                    --Number, cost in $ to fuse this recipe
   requirement = func,               --Optional function; fusion can only be carried out if this function returns `true`.

@@ -35,7 +35,6 @@ SMODS.Joker{
             }
         }
     end,
-    no_collection = true,
     config = {
         extra = {
             mult = 69
