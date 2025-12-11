@@ -80,6 +80,19 @@ FusionJokers.fusions:register_fusion{
 > [!NOTE]
 > The old `add_fusion` method is depreciated and kept only for compatibility; please switch to `register_fusion` at your earliest convenience!
 
+When fusing, calculation is called with the following context:
+```lua
+context = {
+  fusing_jokers = true, --Boolean to flag this context
+  fusion_components = {
+    [1] = Card, --first Joker to be fused away
+    [2] = Card, --next Joker to be fused away
+    --and so forth
+  },
+  fusion_result = Card --resulting Joker
+}
+```
+
 ## 🎉 Credits <a name = "credits"></a>
 
 - The original mod was written by [**Itayfeder**](https://github.com/stars/itayfeder/lists/balatro-modding), with art created by [**Lyman**](https://github.com/spikeof2010)

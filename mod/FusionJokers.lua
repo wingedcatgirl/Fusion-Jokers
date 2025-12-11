@@ -420,6 +420,12 @@ function Card:fuse_card(debug)
 			table.sort(joker_pos, function (a, b)
 				return a.pos > b.pos
 			end)
+			local ingredience = {}
+			for index, pos in ipairs(joker_pos) do
+				ingredience[index] = G.jokers.cards[pos.pos]
+				G.jokers.cards[pos.pos].fused = true --Check for this if your on-card-removal function has an opinion on whether being fused counts as removal.
+			end
+			SMODS.calculate_context{fusing_jokers = true, fusion_components = ingredience, fusion_result = j_fusion}
 			for index, pos in ipairs(joker_pos) do
 				local isPrimary = false
 				if G.jokers.cards[pos.pos] == self then
@@ -443,8 +449,12 @@ function Card:fuse_card(debug)
 					end
 				end
 				--G.jokers.cards[pos]:start_dissolve({G.C.GOLD})
-				G.jokers.cards[pos.pos].fused = true --Check for this if your on-card-removal function has an opinion on whether being fused counts as removal.
-				G.jokers.cards[pos.pos]:remove()
+				local flags = SMODS.calculate_context({joker_type_destroyed = true, card = G.jokers.cards[pos.pos]})
+				if not flags.no_destroy then
+					G.jokers.cards[pos.pos]:remove()
+				else
+					G.jokers.cards[pos.pos].fused = nil
+				end
 			end
 
 			if next(carried_stats) then
