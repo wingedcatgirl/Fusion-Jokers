@@ -601,6 +601,8 @@ function Card:update(dt)
 		if not fuseable and self.ability.fusion.jiggle then
 			self.ability.fusion.jiggle = false
 		end
+	else
+		self.ability.fusion, self.fusion_cost = nil, nil
 	end
   end
 end
