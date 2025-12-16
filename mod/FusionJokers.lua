@@ -133,8 +133,8 @@ function FusionJokers.fusions:register_fusion(t)
 		while t["joker"..i] do
 			jokers[i] = {
 				name = t["joker"..i],
-				carry_stat = t["carry_stat"]..i,
-				merge_stat = t["merge_stat"]..i
+				carry_stat = t["carry_stat"..i],
+				merge_stat = t["merge_stat"..i]
 			}
 			i = i+1
 		end
