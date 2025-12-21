@@ -76,10 +76,10 @@ SMODS.Joker {
     end,
 	update = function(self, card, dt)
         if not self.discovered and not card.bypass_discovery_center then return end
-        if FusionJokers.fusionconfig.cw_alt_art and card.ability.extra.art == "standard" then
+        if FusionJokers.fusionconfig.cw_alt_art and card.ability.extra.art ~= "alt" then
             card.children.center:set_sprite_pos({ x = 1, y = 0})
             card.ability.extra.art = "alt"
-        elseif not FusionJokers.fusionconfig.cw_alt_art and card.ability.extra.art == "alt" then
+        elseif not FusionJokers.fusionconfig.cw_alt_art and card.ability.extra.art ~= "standard" then
             card.children.center:set_sprite_pos({ x = 0, y = 0})
             card.ability.extra.art = "standard"
         end
