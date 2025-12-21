@@ -92,13 +92,6 @@ SMODS.Joker {
             end
         }
     end,
-	update = function(self, card, dt)
-        if G.SETTINGS.colourblind_option then
-            card.children.center:set_sprite_pos({ x = 1, y = 0})
-        else
-            card.children.center:set_sprite_pos({ x = 0, y = 0})
-        end
-    end
 }
 
 -- See localization/en-us.lua to create joker text

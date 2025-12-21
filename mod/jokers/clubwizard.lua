@@ -74,6 +74,7 @@ SMODS.Joker {
         }
     end,
 	update = function(self, card, dt)
+        if not self.discovered and not card.bypass_discovery_center then return end
         if G.SETTINGS.colourblind_option then
             card.children.center:set_sprite_pos({ x = 1, y = 0})
         else
