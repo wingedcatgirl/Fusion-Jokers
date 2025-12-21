@@ -6,6 +6,11 @@ SMODS.current_mod.config_tab = function()
             ref_table = FusionJokers.fusionconfig,
             ref_value = 'block_components',
         }),
+        create_toggle({
+            label = "Alt art for Club Wizard",
+            ref_table = FusionJokers.fusionconfig,
+            ref_value = 'cw_alt_art',
+        }),
         }}
     }}
 end
