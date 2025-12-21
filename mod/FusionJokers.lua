@@ -106,20 +106,6 @@ SMODS.Joker.inject =function(self)
   SMODS_Joker_inject(self)
 end
 
-function FusionJokers.fusions:add_fusion(joker1, carry_stat1, extra1, joker2, carry_stat2, extra2, result_joker, cost, merged_stat, merge_stat1, merge_stat2, merge_extra)
-	if type(joker1) == "table" then
-		sendWarnMessage("add_fusion expects a list of parameters, not a table; passing table to register_fusion", "Fusion Jokers")
-		FusionJokers.fusions:register_fusion(joker1)
-	else
-		sendWarnMessage("add_fusion is now deprecated, please switch to register_fusion at earliest convenience", "Fusion Jokers")
-	table.insert(self,
-		{ jokers = {
-			{ name = joker1, carry_stat = carry_stat1, extra_stat = extra1, merge_stat = merge_stat1 },
-			{ name = joker2, carry_stat = carry_stat2, extra_stat = extra2, merge_stat = merge_stat2 }
-		}, result_joker = result_joker, cost = cost, merged_stat = merged_stat, merge_extra = merge_extra })
-	end
-end
-
 function FusionJokers.fusions:register_fusion(t)
 	if type(t) ~= "table" then
 		sendErrorMessage("Invalid format for register_fusion; should be table, got "..type(t), "Fusion Jokers")
@@ -149,6 +135,25 @@ function FusionJokers.fusions:register_fusion(t)
 		requirement = t.requirement,
 		aftermath = t.aftermath,
 	})
+end
+
+function FusionJokers.fusions:add_fusion(joker1, carry_stat1, extra1, joker2, carry_stat2, extra2, result_joker, cost, merged_stat, merge_stat1, merge_stat2)
+	if type(joker1) == "table" then
+		sendWarnMessage("add_fusion expects a list of parameters, not a table; passing table to register_fusion", "Fusion Jokers")
+		FusionJokers.fusions:register_fusion(joker1)
+	else
+		sendWarnMessage("add_fusion is now deprecated, please switch to register_fusion at earliest convenience", "Fusion Jokers")
+	
+		self:register_fusion{
+			jokers = {
+				{name = joker1, carry_stat = carry_stat1, merge_stat = merge_stat1 },
+				{name = joker2, carry_stat = carry_stat2, merge_stat = merge_stat2 },
+			},
+			merged_stat = merged_stat,
+			result_joker = result_joker,
+			cost = cost,
+		}
+	end
 end
 
 SMODS.load_file('jokers/diamondbard.lua')()
@@ -556,26 +561,6 @@ function G.UIDEF.use_and_sell_buttons(card)
 
 	return retval
 end
-
-
-local card_h_popupref = G.UIDEF.card_h_popup
-function G.UIDEF.card_h_popup(card)
-    local retval = card_h_popupref(card)
-    if not card.config.center or -- no center
-	(card.config.center.unlocked == false and not card.bypass_lock) or -- locked card
-	card.debuff or -- debuffed card
-	(not card.config.center.discovered and ((card.area ~= G.jokers and card.area ~= G.consumeables and card.area) or not card.area)) -- undiscovered card
-	then return retval end
-
-	if card.config.center.rarity == 5 then
-		retval.nodes[1].nodes[1].nodes[1].nodes[3].nodes[1].nodes[1].nodes[2].config.object:remove()
-		retval.nodes[1].nodes[1].nodes[1].nodes[3].nodes[1] = create_badge(localize('k_fusion'), loc_colour("fusion", nil), nil, 1.2)
-	end
-
-	return retval
-end
-
-
 
 local updateref = Card.update
 function Card:update(dt)
