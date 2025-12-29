@@ -47,7 +47,7 @@ You can find a list of their abilities, as well as the jokers needed to make the
 ## ⚙️ Config <a name = "config"></a>
 
 - **Block used components from reappearing**: Jokers used in a fusion cannot reappear if the fusion is present. Default true.
-  - These Jokers can reappear regardless if Showman or a Showman-like effect is active, if the fused Joker's `in_pool()` has `{allow_returning_components = true}` in its second return value, or if the component joker has `{allow_duplicates = true}` in its second return value.
+  - These Jokers can reappear regardless if Showman or a Showman-like effect is active, if the fused Joker's `in_pool()` has `{allow_returning_components = true}` in its second return value, or if the component Joker's `in_pool()` has `{allow_duplicates = true}` in its second return value.
 - **Alt art for Club Wizard**: A lighter color to better match high-contrast Clubs.
 
 ## ➕ Fusion API (For Developers) <a name = "fusion_api"></a>
