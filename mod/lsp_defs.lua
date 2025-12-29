@@ -26,7 +26,7 @@ end
 ---@param carry_stat2 string|nil Name of the stat to carry, if any
 ---@param extra2 nil No longer used
 ---@param result_joker string Key of the output Joker
----@param cost string Cost in dollars to perform this fusion
+---@param cost number Cost in dollars to perform this fusion
 ---@param merged_stat string|nil Name of the stat in which to place `merge_stat`s
 ---@param merge_stat1 string|nil Name of the stat to merge from Joker 1
 ---@param merge_stat2 string|nil ... and from Joker 2

@@ -51,3 +51,9 @@ SMODS.Joker{
         end
     end
 }
+
+SMODS.Joker:take_ownership("joker", {
+    in_pool = function (self, args)
+        return true, {allow_duplicates = true}
+    end
+})

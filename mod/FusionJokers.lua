@@ -70,20 +70,16 @@ FusionJokers.fusions = {
 FusionJokers.fusionconfig = SMODS.current_mod.config
 SMODS.load_file('configui.lua')()
 
+FusionJokers.fusions.ingredience = {}
+
 for _, fusion in ipairs(FusionJokers.fusions) do
     local fused = fusion.result_joker
 
     for _, component in ipairs(fusion.jokers) do
         local component_name = component.name
 
-        SMODS.Joker:take_ownership(component_name, {
-            in_pool = function(self, args)
-                if #SMODS.find_card('j_showman') > 0 then return true end -- Allow finding copies if Showman is present
-				if not FusionJokers.fusionconfig.block_components then return true end --If the option is disabled, don't do the check
-                if #SMODS.find_card(fused) > 0 then return false end -- If the fused Joker exists, remove both components
-                return true
-            end
-        }, true) -- silent | suppresses mod badge
+		FusionJokers.fusions.ingredience[component_name] = FusionJokers.fusions.ingredience[component_name] or {}
+		FusionJokers.fusions.ingredience[component_name][fused] = true
     end
 end
 
@@ -126,6 +122,11 @@ function FusionJokers.fusions:register_fusion(t)
 		end
 	end
 
+	for i,v in ipairs(jokers) do
+		FusionJokers.fusions.ingredience[v.name] = FusionJokers.fusions.ingredience[v.name] or {}
+		FusionJokers.fusions.ingredience[v.name][t.result_joker] = true
+	end
+
 	table.insert(self,
 	{
 		jokers = jokers,
@@ -154,6 +155,26 @@ function FusionJokers.fusions:add_fusion(joker1, carry_stat1, extra1, joker2, ca
 			cost = cost,
 		}
 	end
+end
+
+local atpref = SMODS.add_to_pool
+SMODS.add_to_pool = function (prototype_obj, args)
+	if SMODS.showman(prototype_obj.key) then return true end
+	args = args or {}
+	if FusionJokers.fusionconfig.block_components and FusionJokers.fusions.ingredience[prototype_obj.key] then
+		local flags1,flags2
+		if type(prototype_obj.in_pool) == "function" then
+			_,flags1 = prototype_obj:in_pool(args)
+		end
+		for k,v in pairs(FusionJokers.fusions.ingredience[prototype_obj.key]) do
+			if type(G.P_CENTERS[k].in_pool) == "function" then	
+				_,flags2 = G.P_CENTERS[k]:in_pool(args)
+			end
+			if not ((flags1 or {}).allow_duplicates or (flags2 or {}).allow_returning_components) and next(SMODS.find_card(k)) then return false end
+		end
+	end
+
+	return atpref(prototype_obj, args)
 end
 
 SMODS.load_file('jokers/diamondbard.lua')()
