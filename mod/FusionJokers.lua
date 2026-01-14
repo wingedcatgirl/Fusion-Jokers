@@ -395,34 +395,58 @@ function Card:fuse_card(debug)
 
 
 	local chosen_fusion = self:get_card_fusion()
-	local joker_pos = {}
 	local carried_stats = {}
 	local merged_stat = 0
+	local recipe = {}
 	do
 		local fusion = chosen_fusion
 		local found_me = false
 		local list = {}
-		local recipe = {}
 		for i,component in ipairs(fusion.jokers) do
-			list[component.name] = (list[component.name] or 0) + 1
-			recipe[#recipe+1] = SMODS.find_card(component.name)[list[component.name]] or "FAILURE!"
-			if recipe[#recipe] == self  then
+			if component.name == self.config.center_key and not found_me then
+				recipe[#recipe+1] = self
 				found_me = true
-			end
-			for ii,vv in ipairs(G.jokers.cards) do
-				if vv == recipe[#recipe] then
-					table.insert(joker_pos, {pos = ii, joker = vv})
-					if component.carry_stat then
-						carried_stats[component.carry_stat] = (carried_stats[component.carry_stat] or 0) + (type(vv.ability.extra) == "table" and vv.ability.extra[component.carry_stat] or vv.ability[component.carry_stat] or 0)
+				self.fused = true
+			else
+				local found_it = false
+				for ii,vv in ipairs(G.jokers.highlighted) do
+					if vv.config.center_key == component.name and not vv.fused then
+						recipe[#recipe+1] = vv
+						vv.fused = true
+						found_it = true
+						if component.carry_stat then
+							carried_stats[component.carry_stat] = (carried_stats[component.carry_stat] or 0) + (type(vv.ability.extra) == "table" and vv.ability.extra[component.carry_stat] or vv.ability[component.carry_stat] or 0)
+						end
+						if component.merge_stat then
+							merged_stat = merged_stat + (type(vv.ability.extra) == "table" and vv.ability.extra[component.merge_stat] or vv.ability[component.merge_stat])
+						end
+						break
 					end
-					if component.merge_stat then
-						merged_stat = merged_stat + (type(vv.ability.extra) == "table" and vv.ability.extra[component.merge_stat] or vv.ability[component.merge_stat])
+				end
+				if not found_it then
+					for ii,vv in ipairs(G.jokers.cards) do
+						if vv.config.center_key == component.name and not vv.fused then
+							recipe[#recipe+1] = vv
+							vv.fused = true
+							found_it = true
+							if component.carry_stat then
+								carried_stats[component.carry_stat] = (carried_stats[component.carry_stat] or 0) + (type(vv.ability.extra) == "table" and vv.ability.extra[component.carry_stat] or vv.ability[component.carry_stat] or 0)
+							end
+							if component.merge_stat then
+								merged_stat = merged_stat + (type(vv.ability.extra) == "table" and vv.ability.extra[component.merge_stat] or vv.ability[component.merge_stat])
+							end
+							break
+						end
 					end
+				end
+				if not found_it then
+					dprint("Failed to find component Jokers when fusing?")
+					chosen_fusion = nil
 				end
 			end
 		end
 
-		if not (#joker_pos == #fusion.jokers and found_me) then
+		if not (#recipe == #fusion.jokers and found_me) then
 			dprint("Failed to find component Jokers when fusing?")
 			chosen_fusion = nil
 		end
@@ -431,34 +455,32 @@ function Card:fuse_card(debug)
 	if chosen_fusion ~= nil then
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function()
 			play_sound('whoosh1')
-			for _, pos in ipairs(joker_pos) do
-				if not edition and G.jokers.cards[pos.pos].edition then
-					edition = G.jokers.cards[pos.pos].edition
+			for i,v in ipairs(recipe) do
+				if not edition and v.edition then
+					edition = v.edition
 				end
-				G.jokers.cards[pos.pos]:juice_up(0.3, 0.4)
+				v:juice_up(0.3, 0.4)
 			end
 			return true
 		end}))
 		delay(0.2)
 		G.E_MANAGER:add_event(Event({trigger = 'immediate',func = function()
 			ease_dollars(-chosen_fusion.cost)
-			local j_fusion = SMODS.create_card({set = "Joker", area = G.jokers, key = chosen_fusion.result_joker, edition = edition})
-			table.sort(joker_pos, function (a, b)
-				return a.pos > b.pos
-			end)
-			local ingredience = {}
-			for index, pos in ipairs(joker_pos) do
-				ingredience[index] = G.jokers.cards[pos.pos]
-				G.jokers.cards[pos.pos].fused = true --Check for this if your on-card-removal function has an opinion on whether being fused counts as removal.
+			local j_fusion = self
+
+			if type(G.P_CENTERS[self.config.center_key].remove_from_deck) == "function" then
+				G.P_CENTERS[self.config.center_key]:remove_from_deck(self)
 			end
-			SMODS.calculate_context{fusing_jokers = true, fusion_components = ingredience, fusion_result = j_fusion}
-			for index, pos in ipairs(joker_pos) do
-				local isPrimary = false
-				if G.jokers.cards[pos.pos] == self then
-					isPrimary = true
-				end
+
+			self:set_ability(chosen_fusion.result_joker)
+			if edition and not self.edition then
+				self:set_edition(edition.key)
+			end
+			SMODS.calculate_context{fusing_jokers = true, fusion_components = recipe, fusion_result = j_fusion}
+			for index, ingredient in ipairs(recipe) do
+				local isPrimary = ingredient == self
 				for k,_ in pairs(SMODS.Stickers) do
-					if G.jokers.cards[pos.pos].ability[k] then
+					if ingredient.ability[k] then
 						-- if string.find(k, "gemslot") then
 						-- 	local gemExists = false
 						-- 	for k1, _ in pairs(j_fusion.ability) do
@@ -475,35 +497,37 @@ function Card:fuse_card(debug)
 					end
 				end
 				--G.jokers.cards[pos]:start_dissolve({G.C.GOLD})
-				local flags = SMODS.calculate_context({joker_type_destroyed = true, card = G.jokers.cards[pos.pos]})
-				if not flags.no_destroy then
-					G.jokers.cards[pos.pos]:remove()
+
+				local flags = SMODS.calculate_context({joker_type_destroyed = true, card = ingredient})
+				if not (flags.no_destroy or isPrimary) then
+					ingredient:remove()
 				else
-					G.jokers.cards[pos.pos].fused = nil
+					ingredient.fused = nil
 				end
 			end
 
 			if next(carried_stats) then
-				if type(j_fusion.ability.extra) == "number" then
-					local num = j_fusion.ability.extra
-					j_fusion.ability.extra = {
+				if type(self.ability.extra) == "number" then
+					local num = self.ability.extra
+					self.ability.extra = {
 						extra = num
 					}
-				elseif type(j_fusion.ability.extra) ~= "table" then
-					j_fusion.ability.extra = {}
+				elseif type(self.ability.extra) ~= "table" then
+					self.ability.extra = {}
 				end
 				for k,v in pairs(carried_stats) do
-					j_fusion.ability.extra[k] = v
+					self.ability.extra[k] = v
 				end
 			end
 			if chosen_fusion.merged_stat then
-				j_fusion.ability.extra[chosen_fusion.merged_stat] = merged_stat
+				self.ability.extra[chosen_fusion.merged_stat] = merged_stat
 			end
 
 			delay(0.3)
 
-			j_fusion:add_to_deck()
-			G.jokers:emplace(j_fusion)
+			if type(G.P_CENTERS[self.config.center_key].add_to_deck) == "function" then
+				G.P_CENTERS[self.config.center_key]:add_to_deck(self)
+			end
 			play_sound('explosion_release1')
 			G.jokers:unhighlight_all()
 
