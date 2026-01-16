@@ -373,7 +373,6 @@ function Card:get_card_fusion(debug)
     return result
 end
 
-
 function Card:fuse_card(debug)
 	local dprint = function(msg)
 		if debug then print(msg) end
@@ -468,10 +467,6 @@ function Card:fuse_card(debug)
 			ease_dollars(-chosen_fusion.cost)
 			local j_fusion = self
 
-			if type(G.P_CENTERS[self.config.center_key].remove_from_deck) == "function" then
-				G.P_CENTERS[self.config.center_key]:remove_from_deck(self)
-			end
-
 			self:set_ability(chosen_fusion.result_joker)
 			if edition and not self.edition then
 				self:set_edition(edition.key)
@@ -525,9 +520,6 @@ function Card:fuse_card(debug)
 
 			delay(0.3)
 
-			if type(G.P_CENTERS[self.config.center_key].add_to_deck) == "function" then
-				G.P_CENTERS[self.config.center_key]:add_to_deck(self)
-			end
 			play_sound('explosion_release1')
 			G.jokers:unhighlight_all()
 
