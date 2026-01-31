@@ -260,6 +260,9 @@ function Card:can_fuse_card(juicing)
 	end
   	return false
 	--]]
+
+	if self.area ~= G.jokers then return false end --Figure out fusing from other areas later; for now just disable it
+
 	local fusion = self:get_card_fusion()
 	if fusion.cost == "??" then return false, fusion end
 	if fusion.blocked and not juicing then return false, fusion end
@@ -271,6 +274,7 @@ function Card:can_fuse_card(juicing)
 end
 
 function Card:get_card_fusion(debug)
+	debug = debug or G.fusion_debug_flag --Set this with DebugPlus if you want to
 	local dprint = function(msg)
 		if debug then print(msg) end
 	end
@@ -374,6 +378,7 @@ function Card:get_card_fusion(debug)
 end
 
 function Card:fuse_card(debug)
+	debug = debug or G.fusion_debug_flag --Set this with DebugPlus if you want to
 	local dprint = function(msg)
 		if debug then print(msg) end
 	end
