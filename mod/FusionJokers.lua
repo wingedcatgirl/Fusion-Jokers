@@ -402,6 +402,7 @@ function Card:fuse_card(debug)
 	local carried_stats = {}
 	local merged_stat = 0
 	local recipe = {}
+	local me
 	do
 		local fusion = chosen_fusion
 		local found_me = false
@@ -411,6 +412,7 @@ function Card:fuse_card(debug)
 				recipe[#recipe+1] = self
 				found_me = true
 				self.fused = true
+				me = component
 			else
 				local found_it = false
 				for ii,vv in ipairs(G.jokers.highlighted) do
@@ -471,6 +473,15 @@ function Card:fuse_card(debug)
 		G.E_MANAGER:add_event(Event({trigger = 'immediate',func = function()
 			ease_dollars(-chosen_fusion.cost)
 			local j_fusion = self
+
+			if me.carry_stat then
+				carried_stats[me.carry_stat] = (carried_stats[me.carry_stat] or 0) + (type(self.ability.extra) == "table" and self.ability.extra[me.carry_stat] or self.ability[me.carry_stat] or 0)
+				if type(self.ability.extra) == "table" then
+					self.ability.extra[me.carry_stat] = 0
+				else
+					self.ability[me.carry_stat] = 0
+				end
+			end
 
 			self:set_ability(chosen_fusion.result_joker)
 			if edition and not self.edition then
@@ -551,6 +562,10 @@ function Card:fuse_card(debug)
 				chosen_fusion.aftermath()
 				return true
 			end}))
+		end
+	else
+		for i,v in ipairs(recipe) do --Shouldn't happen, but don't leave the fused flag lying around if it does
+			v.fused = nil
 		end
 	end
 
