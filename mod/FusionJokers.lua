@@ -144,7 +144,7 @@ function FusionJokers.fusions:add_fusion(joker1, carry_stat1, extra1, joker2, ca
 		FusionJokers.fusions:register_fusion(joker1)
 	else
 		sendWarnMessage("add_fusion is now deprecated, please switch to register_fusion at earliest convenience", "Fusion Jokers")
-	
+
 		self:register_fusion{
 			jokers = {
 				{name = joker1, carry_stat = carry_stat1, merge_stat = merge_stat1 },
@@ -167,7 +167,7 @@ SMODS.add_to_pool = function (prototype_obj, args)
 			_,flags1 = prototype_obj:in_pool(args)
 		end
 		for k,v in pairs(FusionJokers.fusions.ingredience[prototype_obj.key]) do
-			if type(G.P_CENTERS[k].in_pool) == "function" then	
+			if type(G.P_CENTERS[k].in_pool) == "function" then
 				_,flags2 = G.P_CENTERS[k]:in_pool(args)
 			end
 			if not ((flags1 or {}).allow_duplicates or (flags2 or {}).allow_returning_components) and next(SMODS.find_card(k)) then return false end
@@ -550,7 +550,7 @@ function Card:fuse_card(debug)
 			return true
 		end}))
 
-		if type(chosen_fusion.aftermath) == "function" then	
+		if type(chosen_fusion.aftermath) == "function" then
 			G.E_MANAGER:add_event(Event({func = function ()
 				chosen_fusion.aftermath()
 				return true
