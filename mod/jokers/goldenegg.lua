@@ -36,9 +36,6 @@ SMODS.Joker {
             }
         }
     end,
-    add_to_deck = function (self, card, from_debuff)
-        card:set_cost()
-    end,
 	calc_dollar_bonus = function(self, card)
 		return card.ability.extra.dollars
 	end,

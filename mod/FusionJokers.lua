@@ -421,6 +421,7 @@ function Card:fuse_card(debug)
 	local chosen_fusion = self:get_card_fusion()
 	local carried_stats = {}
 	local merged_stat = 0
+	local total_extra_cost = 0
 	local recipe = {}
 	local me
 	do
@@ -432,6 +433,9 @@ function Card:fuse_card(debug)
 				recipe[#recipe+1] = self
 				found_me = true
 				self.fused = true
+				total_extra_cost = total_extra_cost + (self.ability.extra_value or 0)
+				print("+"..tostring(self.ability.extra_value))
+				print(tostring(total_extra_cost))
 				if component.carry_stat then
 					carried_stats[component.carry_stat] = (carried_stats[component.carry_stat] or 0) + (type(self.ability.extra) == "table" and self.ability.extra[component.carry_stat] or self.ability[component.carry_stat] or 0)
 				end
@@ -442,6 +446,9 @@ function Card:fuse_card(debug)
 						recipe[#recipe+1] = vv
 						vv.fused = true
 						found_it = true
+						total_extra_cost = total_extra_cost + (vv.ability.extra_value or 0)
+						print("+"..tostring(vv.ability.extra_value))
+						print(tostring(total_extra_cost))
 						if component.carry_stat then
 							carried_stats[component.carry_stat] = (carried_stats[component.carry_stat] or 0) + (type(vv.ability.extra) == "table" and vv.ability.extra[component.carry_stat] or vv.ability[component.carry_stat] or 0)
 						end
@@ -550,6 +557,8 @@ function Card:fuse_card(debug)
 			delay(0.3)
 
 			play_sound('explosion_release1')
+			self.ability.extra_value = total_extra_cost
+			self:set_cost()
 			G.jokers:unhighlight_all()
 
 			delay(0.1)
