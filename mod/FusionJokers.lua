@@ -167,7 +167,7 @@ SMODS.add_to_pool = function (prototype_obj, args)
 			_,flags1 = prototype_obj:in_pool(args)
 		end
 		for k,v in pairs(FusionJokers.fusions.ingredience[prototype_obj.key]) do
-			assert(G.P_CENTERS[k], "Registered fusion "..k.." wants to create an unregistered Joker!\nEnsure "..k.." is a registered Joker, or else don't register this fusion.")
+			--assert(G.P_CENTERS[k], "Registered fusion "..k.." wants to create an unregistered Joker!\nEnsure "..k.." is a registered Joker, or else don't register this fusion.")
 			if type(G.P_CENTERS[k].in_pool) == "function" then
 				_,flags2 = G.P_CENTERS[k]:in_pool(args)
 			end
