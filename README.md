@@ -95,6 +95,8 @@ context = {
 }
 ```
 
+Fusions can be discounted by indexing a number to the final joker's key in `G.GAME.fujo_fusion_discount` for a flat discount in dollars, or `G.GAME.fujo_fusion_discountpercent` for a percentage discount. Alternately, index at the `universal` key for a discount that applies to all fusions. (Decimals always round down; minimum $1 after all discounts.)
+
 ## 🎉 Credits <a name = "credits"></a>
 
 - The original mod was written by [**Itayfeder**](https://github.com/stars/itayfeder/lists/balatro-modding), with art created by [**Lyman**](https://github.com/spikeof2010)

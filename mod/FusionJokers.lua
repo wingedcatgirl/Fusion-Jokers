@@ -369,11 +369,30 @@ function Card:get_card_fusion(debug)
 	if #held > 1 and result.cost == "??" then
 		dprint("Picking a random possible fusion...")
 		local possible = #affordable > 0 and affordable or held
-		local pick = pseudorandom("fusetext", 1, #possible)
+		local speedfac = 8
+		local time = math.floor(love.timer.getTime() * speedfac)
+		if G.fusion_debug_flag then print(tostring(time)) end
+		math.randomseed(time)
+		local pick = math.random(1, #possible)
 		result = possible[pick]
 		result.blocked = true
 	else
 		dprint(result.blocked and "Result is blocked when it shouldn't be??" or "Result is not blocked (this is correct)")
+	end
+	if type(result.cost) == type(0) then
+		if G.GAME.fujo_fusion_discount then
+			if G.GAME.fujo_fusion_discount[result.result_joker] then
+				result.cost = result.cost - G.GAME.fujo_fusion_discount[result.result_joker]
+			end
+			result.cost = result.cost - (G.GAME.fujo_fusion_discount.universal or 0)
+		end
+		if G.GAME.fujo_fusion_discountpercent then
+			if G.GAME.fujo_fusion_discountpercent[result.result_joker] then
+				result.cost = result.cost * (1 - G.GAME.fujo_fusion_discountpercent[result.result_joker])
+			end
+			result.cost = result.cost * (1 - (G.GAME.fujo_fusion_discountpercent.universal or 0))
+		end
+		result.cost = math.max(math.floor(result.cost), 1)
 	end
     return result
 end
@@ -664,5 +683,7 @@ end
 SMODS.current_mod.reset_game_globals = function (init)
 	if init then
 		G.jokers.config.highlighted_limit = math.max(G.jokers.config.highlighted_limit, 1e300)
+		G.GAME.fujo_fusion_discount = {}
+		G.GAME.fujo_fusion_discountpercent = {}
 	end
 end
