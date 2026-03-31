@@ -434,10 +434,11 @@ function Card:fuse_card(debug)
 				found_me = true
 				self.fused = true
 				total_extra_cost = total_extra_cost + (self.ability.extra_value or 0)
-				print("+"..tostring(self.ability.extra_value))
-				print(tostring(total_extra_cost))
 				if component.carry_stat then
 					carried_stats[component.carry_stat] = (carried_stats[component.carry_stat] or 0) + (type(self.ability.extra) == "table" and self.ability.extra[component.carry_stat] or self.ability[component.carry_stat] or 0)
+				end
+				if component.merge_stat then
+					merged_stat = merged_stat + (type(self.ability.extra) == "table" and self.ability.extra[component.merge_stat] or self.ability[component.merge_stat])
 				end
 			else
 				local found_it = false
@@ -447,8 +448,6 @@ function Card:fuse_card(debug)
 						vv.fused = true
 						found_it = true
 						total_extra_cost = total_extra_cost + (vv.ability.extra_value or 0)
-						print("+"..tostring(vv.ability.extra_value))
-						print(tostring(total_extra_cost))
 						if component.carry_stat then
 							carried_stats[component.carry_stat] = (carried_stats[component.carry_stat] or 0) + (type(vv.ability.extra) == "table" and vv.ability.extra[component.carry_stat] or vv.ability[component.carry_stat] or 0)
 						end
