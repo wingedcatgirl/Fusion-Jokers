@@ -371,6 +371,7 @@ function Card:get_card_fusion(debug)
 		local possible = #affordable > 0 and affordable or held
 		local speedfac = 8
 		local time = math.floor(love.timer.getTime() * speedfac)
+		if FusionJokers.fusionconfig.no_price_flicker then time = 1 end
 		if G.fusion_debug_flag then print(tostring(time)) end
 		math.randomseed(time)
 		local pick = math.random(1, #possible)

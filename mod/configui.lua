@@ -11,6 +11,11 @@ SMODS.current_mod.config_tab = function()
             ref_table = FusionJokers.fusionconfig,
             ref_value = 'cw_alt_art',
         }),
+        create_toggle({
+            label = "No price flickering",
+            ref_table = FusionJokers.fusionconfig,
+            ref_value = 'no_price_flicker',
+        }),
         }}
     }}
 end
