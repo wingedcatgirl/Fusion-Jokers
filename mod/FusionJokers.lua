@@ -523,7 +523,11 @@ function Card:fuse_card(debug)
 						-- 		j_fusion.ability[k] = true
 						-- 	end
 						-- else
+							local perish_count = j_fusion.ability.perish_tally or 0
 							j_fusion.ability[k] = true
+							if k == "perishable" then
+								j_fusion.ability.perish_tally = math.max(perish_count, ingredient.ability.perish_tally)
+							end
 						--end
 					end
 				end
