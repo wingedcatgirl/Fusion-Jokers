@@ -81,7 +81,7 @@ FusionJokers.fusions:register_fusion{
 > Carried and merged stats _always_ go in the new Joker's `ability.extra` table now! You also no longer need to specify whether the component Jokers' abilities are in an `extra` table or not; this is now detected automatically.
 
 > [!NOTE]
-> The old `add_fusion` method is depreciated and kept only for compatibility; please switch to `register_fusion` at your earliest convenience!
+> The old `add_fusion` method is depreciated and kept only for compatibility; please switch to `register_fusion` at your earliest convenience! You should be able to use [this regex](https://regex101.com/r/msZHKS/2/substitution) to quickly swap everything in your codespace.
 
 When fusing, calculation is called with the following context:
 ```lua
