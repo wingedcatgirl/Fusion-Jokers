@@ -512,21 +512,23 @@ function Card:fuse_card(debug)
 				local isPrimary = ingredient == self
 				for k,_ in pairs(SMODS.Stickers) do
 					if ingredient.ability[k] then
-						-- if string.find(k, "gemslot") then
-						-- 	local gemExists = false
-						-- 	for k1, _ in pairs(j_fusion.ability) do
-						-- 		if string.find(k1, "gemslot") then
-						-- 				gemExists = true
-						-- 		end
-						-- 	end
-						-- 	if isPrimary then
-						-- 		j_fusion.ability[k] = true
-						-- 	end
-						-- else
+						--[[
+						if string.find(k, "gemslot") then
+							local gemExists = false
+							for k1, _ in pairs(j_fusion.ability) do
+								if string.find(k1, "gemslot") then
+									gemExists = true
+								end
+							end
+							if isPrimary then
+								j_fusion.ability[k] = true
+							end
+						else
+						--]]
 							local perish_count = j_fusion.ability.perish_tally or 0
-							j_fusion.ability[k] = true
+							j_fusion:add_sticker(k, true)
 							if k == "perishable" then
-								j_fusion.ability.perish_tally = math.max(perish_count, ingredient.ability.perish_tally)
+								j_fusion.ability.perish_tally = math.max(perish_count, ingredient.ability.perish_tally or 0)
 							end
 						--end
 					end
