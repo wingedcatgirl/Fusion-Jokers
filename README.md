@@ -7,7 +7,7 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/itayfeder/Fusion-Jokers.svg)](https://github.com/itayfeder/Fusion-Jokers/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/wingedcatgirl/Fusion-Jokers.svg)](https://github.com/wingedcatgirl/Fusion-Jokers/issues)
 [![License](https://img.shields.io/badge/license-GNU-blue.svg)](/LICENSE)
 
 </div>
