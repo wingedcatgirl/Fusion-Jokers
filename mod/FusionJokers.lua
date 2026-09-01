@@ -75,12 +75,29 @@ FusionJokers.fusions.ingredience = {}
 for _, fusion in ipairs(FusionJokers.fusions) do
     local fused = fusion.result_joker
 
+	local jokermap = {}
     for _, component in ipairs(fusion.jokers) do
         local component_name = component.name
 
 		FusionJokers.fusions.ingredience[component_name] = FusionJokers.fusions.ingredience[component_name] or {}
 		FusionJokers.fusions.ingredience[component_name][fused] = true
+		jokermap[component.name] = (jokermap[component.name] or 0) + 1
     end
+
+	for k in pairs(jokermap) do
+		local center = SMODS.Centers[k] or G.P_CENTERS[k]
+
+		if center then
+			center.fusion_partners = center.fusion_partners or {}
+			for kk in pairs(jokermap) do
+				if k ~= kk or jokermap[k] > 1 then
+					center.fusion_partners[kk] = true
+				end
+			end
+		else
+			sendWarnMessage("Couldn't find "..k.." in SMODS.Centers nor G.P_CENTERS; hopefully just a loading order issue?")
+		end
+	end
 end
 
 
@@ -122,9 +139,27 @@ function FusionJokers.fusions:register_fusion(t)
 		end
 	end
 
+	local jokermap = {}
 	for i,v in ipairs(jokers) do
 		FusionJokers.fusions.ingredience[v.name] = FusionJokers.fusions.ingredience[v.name] or {}
 		FusionJokers.fusions.ingredience[v.name][t.result_joker] = true
+
+		jokermap[v.name] = (jokermap[v.name] or 0) + 1
+	end
+
+	for k in pairs(jokermap) do
+		local center = SMODS.Centers[k] or G.P_CENTERS[k]
+
+		if center then
+			center.fusion_partners = center.fusion_partners or {}
+			for kk in pairs(jokermap) do
+				if k ~= kk or jokermap[k] > 1 then
+					center.fusion_partners[kk] = true
+				end
+			end
+		else
+			sendWarnMessage("Couldn't find "..k.." in SMODS.Centers; hopefully just a loading order issue?")
+		end
 	end
 
 	table.insert(self,
@@ -159,6 +194,7 @@ end
 
 local atpref = SMODS.add_to_pool
 SMODS.add_to_pool = function (prototype_obj, args)
+	if not G.P_CENTERS[(prototype_obj or {}).key or ""] then return atpref(prototype_obj, args) end
 	if SMODS.showman(prototype_obj.key) then return true end
 	args = args or {}
 	if FusionJokers.fusionconfig.block_components and FusionJokers.fusions.ingredience[prototype_obj.key] then
@@ -503,7 +539,11 @@ function Card:fuse_card(debug)
 			ease_dollars(-chosen_fusion.cost)
 			local j_fusion = self
 
+			local bc, bu = self.bypass_discovery_center, self.bypass_discovery_ui
+			self.bypass_discovery_center, self.bypass_discovery_ui = true, true
 			self:set_ability(chosen_fusion.result_joker)
+			self.bypass_discovery_center, self.bypass_discovery_ui = bc, bu
+
 			if edition and not self.edition then
 				self:set_edition(edition.key)
 			end
