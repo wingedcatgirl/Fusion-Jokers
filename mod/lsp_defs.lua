@@ -6,7 +6,7 @@
 ---@field merge_stat? string Name of the stat to be merged (as `carry_stat`); all `merge_stat` are added together.
 
 ---@class FusionRecipe
----@field jokers FusionIngredient[] 
+---@field jokers FusionIngredient[]
 ---@field result_joker string Key of the Joker to be produced
 ---@field cost number Cost in dollars to perform this fusion
 ---@field merged_stat? string Key of the stat in which to place any `merge_stat` values, if present

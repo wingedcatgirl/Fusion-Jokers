@@ -77,7 +77,7 @@ SMODS.Joker {
 
         if context.remove_playing_cards and not context.blueprint then
             -- G.E_MANAGER:add_event(Event({
-            -- 	trigger = 'after', 
+            -- 	trigger = 'after',
             -- 	delay = 1,
             -- 	func = function()
             -- 		sendDebugMessage(tostring(#context.removed))

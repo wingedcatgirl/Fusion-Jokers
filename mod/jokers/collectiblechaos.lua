@@ -44,7 +44,7 @@ SMODS.Joker {
         }
     end,
     add_to_deck = function(self, card, from_debuff)
-        if not from_debuff then -- no gameplan shenanigans for bunco enjoyers :p 
+        if not from_debuff then -- no gameplan shenanigans for bunco enjoyers :p
             G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + card.ability.extra.free
             calculate_reroll_cost(true)
         end

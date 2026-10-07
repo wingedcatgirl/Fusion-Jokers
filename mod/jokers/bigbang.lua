@@ -22,8 +22,8 @@ SMODS.Joker {
     blueprint_compat = true,
     config = {
         extra = {
-            Xmult = 0.1, 
-            joker1 = "j_supernova", 
+            Xmult = 0.1,
+            joker1 = "j_supernova",
             joker2 = "j_constellation"
         }
     },

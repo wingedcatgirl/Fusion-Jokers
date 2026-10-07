@@ -760,7 +760,7 @@ end
 -- 	G.E_MANAGER:add_event(Event({
 --         trigger = 'before',
 --         blockable = false,
---         func = (function() 
+--         func = (function()
 -- 			if (self.ability.name == 'Glass Card') and find_joker("Moon Marauder") then
 -- 				local _card = copy_card(self, nil, nil, G.playing_card)
 -- 				_card:add_to_deck()

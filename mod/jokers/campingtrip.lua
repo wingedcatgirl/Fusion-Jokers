@@ -22,9 +22,9 @@ SMODS.Joker {
     blueprint_compat = true,
     config = {
         extra = {
-            bonus_base = 5, 
-            bonus_final = 10, 
-            joker1 = "j_hiker", 
+            bonus_base = 5,
+            bonus_final = 10,
+            joker1 = "j_hiker",
             joker2 = "j_dusk"
         }
     },

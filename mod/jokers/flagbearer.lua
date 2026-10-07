@@ -23,9 +23,9 @@ SMODS.Joker {
     config = {
         extra = {
             hand_add = 1,
-            discard_sub = 1, 
+            discard_sub = 1,
             mult = 0,
-            joker1 = "j_banner", 
+            joker1 = "j_banner",
             joker2 = "j_green_joker"
         }
     },

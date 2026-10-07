@@ -23,7 +23,7 @@ SMODS.Joker {
     config = {
         extra = {
             mult = 24,
-            joker1 = "j_gluttenous_joker", 
+            joker1 = "j_gluttenous_joker",
             joker2 = "j_onyx_agate",
             art = "standard"
         }

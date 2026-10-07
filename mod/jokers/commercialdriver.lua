@@ -22,9 +22,9 @@ SMODS.Joker {
     blueprint_compat = true,
     config = {
         extra = {
-            bonus = 0.25, 
-            total = 1, 
-            joker1 = "j_ride_the_bus", 
+            bonus = 0.25,
+            total = 1,
+            joker1 = "j_ride_the_bus",
             joker2 = "j_drivers_license"
         }
     },
@@ -34,7 +34,7 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.bonus, 
+                card.ability.extra.bonus,
                 card.ability.extra.total,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}
