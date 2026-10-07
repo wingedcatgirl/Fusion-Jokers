@@ -24,14 +24,17 @@ SMODS.Joker {
         extra = {
             chips = 15,
             mult = 2,
-            joker1 = "j_scary_face", 
+            joker1 = "j_scary_face",
             joker2 = "j_smiley"
         }
+    },
+    attributes = {
+        "face", "chips", "mult"
     },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.chips, 
+                card.ability.extra.chips,
                 card.ability.extra.mult,
                 localize{type = 'name_text', key = card.ability.extra.joker1, set = 'Joker'},
                 localize{type = 'name_text', key = card.ability.extra.joker2, set = 'Joker'}

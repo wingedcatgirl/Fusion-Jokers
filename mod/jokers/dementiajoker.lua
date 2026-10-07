@@ -28,6 +28,9 @@ SMODS.Joker {
             joker2 = "j_riff_raff",
         }
     },
+    attributes = {
+        "generation", "negative", "joker", "mult"
+    },
     loc_vars = function(self, info_queue, card)
         local luck, odds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "fusion_dementia_desc", false)
         return {

@@ -29,6 +29,9 @@ SMODS.Joker {
             joker2 = "j_green_joker"
         }
     },
+    attributes = {
+        "mult", "discard", "scaling", "hands"
+    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {

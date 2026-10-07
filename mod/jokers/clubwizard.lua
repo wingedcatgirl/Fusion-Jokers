@@ -28,6 +28,9 @@ SMODS.Joker {
             art = "standard"
         }
     },
+    attributes = {
+        "suit", "clubs", "mult"
+    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {

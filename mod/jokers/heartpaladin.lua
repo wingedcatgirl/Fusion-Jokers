@@ -28,6 +28,9 @@ SMODS.Joker {
             joker2 = "j_bloodstone"
         }
     },
+    attributes = {
+        "suit", "hearts", "chance", "xmult"
+    },
     loc_vars = function(self, info_queue, card)
         local luck, odds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "fusion_heartpaladin_desc", false)
         return {

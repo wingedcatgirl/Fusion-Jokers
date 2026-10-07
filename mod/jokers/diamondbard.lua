@@ -29,6 +29,9 @@ SMODS.Joker {
             joker2 = "j_rough_gem",
         }
     },
+    attributes = {
+        "suit", "diamonds", "economy", "mult"
+    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {

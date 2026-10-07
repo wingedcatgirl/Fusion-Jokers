@@ -27,6 +27,9 @@ SMODS.Joker {
             joker2 = "j_constellation"
         }
     },
+    attributes = {
+        "xmult", "hand_type", "space"
+    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {

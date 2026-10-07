@@ -1,5 +1,13 @@
 FusionJokers.fusions:add_fusion("j_six_slothful_joker", nil, false, "j_six_moonstone", nil, false, "j_fuse_moon_marauder", 12)
 
+SMODS.Attribute{
+    key = "six_moons",
+    keys = {
+        "j_six_slothful_joker",
+        "j_six_moonstone"
+    }
+}
+
 SMODS.Atlas {
     key = 'moon_marauder',
     path = "j_moon_marauder.png",
@@ -28,6 +36,9 @@ SMODS.Joker {
             joker1 = "j_six_slothful_joker",
             joker2 = "j_six_moonstone"
         }
+    },
+    attributes = {
+        "suit", "six_moons", "generation", "playing_card", "enhancements", "modify_card"
     },
     loc_vars = function(self, info_queue, card)
         local luck, odds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "fusion_moonmarauder_desc", false)

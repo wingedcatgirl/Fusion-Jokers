@@ -28,6 +28,9 @@ SMODS.Joker {
             joker2 = "j_dusk"
         }
     },
+    attributes = {
+        "retrigger", "hands", "chips", "modify_card", "perma_bonus"
+    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {

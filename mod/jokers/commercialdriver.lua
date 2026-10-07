@@ -28,6 +28,9 @@ SMODS.Joker {
             joker2 = "j_drivers_license"
         }
     },
+    attributes = {
+        "xmult", "scaling", "reset", "enhancements"
+    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {

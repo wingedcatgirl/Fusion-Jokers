@@ -29,6 +29,9 @@ SMODS.Joker {
             joker2 = "j_flash"
         }
     },
+    attributes = {
+        "reroll", "passive", "economy", "shop", "mult", "scaling"
+    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {

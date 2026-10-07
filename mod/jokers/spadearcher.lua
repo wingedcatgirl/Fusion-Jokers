@@ -23,10 +23,13 @@ SMODS.Joker {
     config = {
         extra = {
 		chips = 50,
-        chip_mod = 10, 
-        joker1 = "j_wrathful_joker", 
+        chip_mod = 10,
+        joker1 = "j_wrathful_joker",
         joker2 = "j_arrowhead"
         }
+    },
+    attributes = {
+        "suit", "spade", "chips", "scaling"
     },
     loc_vars = function(self, info_queue, card)
         return {

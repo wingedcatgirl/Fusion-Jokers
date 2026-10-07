@@ -1,5 +1,12 @@
 FusionJokers.fusions:add_fusion("j_six_envious_joker", nil, false, "j_six_star_ruby", nil, false, "j_fuse_star_oracle", 12)
 
+SMODS.Attribute{
+    key = "six_stars",
+    keys = {
+        "j_six_envious_joker", "j_six_star_ruby"
+    }
+}
+
 SMODS.Atlas {
     key = 'star_oracle',
     path = "j_star_oracle.png",
@@ -25,10 +32,13 @@ SMODS.Joker {
     config = {
         extra = {
 			odds = 10,
-            slots = 2, 
-            joker1 = "j_six_envious_joker", 
+            slots = 2,
+            joker1 = "j_six_envious_joker",
             joker2 = "j_six_star_ruby",
         }
+    },
+    attributes = {
+        "suit", "six_stars", "chance", "consumable_slot"
     },
     loc_vars = function(self, info_queue, card)
         local luck, odds = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "fusion_staroracle_desc", false)

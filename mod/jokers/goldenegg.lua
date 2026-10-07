@@ -27,6 +27,9 @@ SMODS.Joker {
             joker2 = "j_golden"
         }
     },
+    attributes = {
+        "economy", "scaling", "sell_value", "food"
+    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {

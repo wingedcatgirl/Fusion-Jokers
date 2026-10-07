@@ -27,6 +27,9 @@ SMODS.Joker {
             joker2 = "j_reserved_parking",
         }
     },
+    attributes = {
+        "face", "economy"
+    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {

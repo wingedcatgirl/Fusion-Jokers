@@ -40,6 +40,9 @@ SMODS.Joker{
             mult = 69
         }
     },
+    attributes = {
+        "mult"
+    },
     rarity = "fuse_fusion",
     atlas = "three",
     pos = {x=0,y=0},
@@ -56,4 +59,4 @@ SMODS.Joker:take_ownership("joker", {
     in_pool = function (self, args)
         return true, {allow_duplicates = true}
     end
-})
+}, true)
