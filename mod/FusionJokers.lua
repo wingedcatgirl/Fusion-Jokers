@@ -241,7 +241,7 @@ end
 local atpref = SMODS.add_to_pool
 SMODS.add_to_pool = function (prototype_obj, args)
 	if not G.P_CENTERS[(prototype_obj or {}).key or ""] then return atpref(prototype_obj, args) end
-	if SMODS.showman(prototype_obj.key) then return true end
+	if SMODS.showman(prototype_obj.key) then return atpref(prototype_obj, args) end
 	args = args or {}
 	if FusionJokers.fusionconfig.block_components and FusionJokers.fusions.ingredience[prototype_obj.key] then
 		local flags1,flags2
