@@ -104,4 +104,4 @@ Fusion recipes add the [attributes](https://docs.smods.dev/Game%20Objects/SMODS.
 
 - The original mod was written by [**Itayfeder**](https://github.com/stars/itayfeder/lists/balatro-modding), with art created by [**Lyman**](https://github.com/spikeof2010)
 - [**elbe**](https://github.com/lshtech) maintained the mod for several months through breaking Steamodded changes, and added some features
-- [**wingedcatgirl**](https://github.com/wingedcatgirl) (hi!) is the current mod maintainer
+- [**wingedcatgirl**](https://github.com/wingedcatgirl) (hi!) is the current mod maintainer and has added a number of updates
