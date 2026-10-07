@@ -70,6 +70,48 @@ FusionJokers.fusions = {
 FusionJokers.fusionconfig = SMODS.current_mod.config
 SMODS.load_file('configui.lua')()
 
+SMODS.Attribute{
+	key = "fusion_ingredient",
+	keys = {
+		"j_greedy_joker", "j_rough_gem",
+		"j_lusty_joker", "j_bloodstone",
+		"j_wrathful_joker", "j_arrowhead",
+		"j_gluttenous_joker", "j_onyx_agate",
+		"j_supernova", "j_constellation",
+		"j_even_steven", "j_odd_todd",
+		"j_flash", "j_chaos",
+		"j_juggler", "j_drunkard",
+		"j_business", "j_reserved_parking",
+		"j_abstract", "j_riff_raff",
+		"j_egg", "j_golden",
+		"j_banner", "j_green_joker",
+		"j_scary_face", "j_smiley",
+		"j_ride_the_bus", "j_drivers_license",
+		"j_hiker", "j_dusk"
+	}
+}
+
+SMODS.Attribute{
+	key = "fusion_result",
+	keys = {
+		"j_fuse_heart_paladin",
+		"j_fuse_diamond_bard",
+		"j_fuse_spade_archer",
+		"j_fuse_club_wizard",
+		"j_fuse_big_bang",
+		"j_fuse_dynamic_duo",
+		"j_fuse_collectible_chaos_card",
+		"j_fuse_flip_flop",
+		"j_fuse_royal_decree",
+		"j_fuse_dementia_joker",
+		"j_fuse_golden_egg",
+		"j_fuse_flag_bearer",
+		"j_fuse_uncanny_face",
+		"j_fuse_commercial_driver",
+		"j_fuse_camping_trip"
+	}
+}
+
 FusionJokers.fusions.ingredience = {}
 
 for _, fusion in ipairs(FusionJokers.fusions) do
@@ -144,8 +186,12 @@ function FusionJokers.fusions:register_fusion(t)
 		FusionJokers.fusions.ingredience[v.name] = FusionJokers.fusions.ingredience[v.name] or {}
 		FusionJokers.fusions.ingredience[v.name][t.result_joker] = true
 
+		SMODS.add_attribute("fusion_ingredient", {v.name})
+
 		jokermap[v.name] = (jokermap[v.name] or 0) + 1
 	end
+
+	SMODS.add_attribute("fusion_result", {t.result_joker})
 
 	for k in pairs(jokermap) do
 		local center = SMODS.Centers[k] or G.P_CENTERS[k]
