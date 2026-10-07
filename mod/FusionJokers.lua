@@ -235,14 +235,6 @@ SMODS.load_file('jokers/commercialdriver.lua')()
 SMODS.load_file('jokers/campingtrip.lua')()
 SMODS.load_file('jokers/test.lua')()
 
-to_number = to_number or function(num)
-	return num
-end
-
-to_big = to_big or function(num)
-	return num
-end
-
 local function has_joker(val, start_pos, highlight_only)
 	if not start_pos then
 		start_pos = 1
@@ -272,7 +264,7 @@ end
 function Card:can_fuse_card(juicing)
 	--[[
 	for _, fusion in ipairs(FusionJokers.fusions) do
-		if to_number(G.GAME.dollars) >= fusion.cost then
+		if G.GAME.dollars >= fusion.cost then
 			local found_me = false
 			local all_jokers = true
 			for _, joker in ipairs(fusion.jokers) do
@@ -307,7 +299,7 @@ function Card:can_fuse_card(juicing)
 	if type(fusion.requirement) == "function" then
 		reqcheck = fusion.requirement()
 	end
-	return reqcheck and (to_big(fusion.cost) + to_big(G.GAME.bankrupt_at or 0)) <= to_big(G.GAME.dollars), fusion
+	return reqcheck and (fusion.cost + (G.GAME.bankrupt_at or 0)) <= G.GAME.dollars, fusion
 end
 
 function Card:get_card_fusion(debug)
@@ -394,7 +386,7 @@ function Card:get_card_fusion(debug)
 					break
 				end
 			end
-			if (to_big(recipe.cost) + to_big(G.GAME.bankrupt_at or 0)) < to_big(G.GAME.dollars) then
+			if (recipe.cost + (G.GAME.bankrupt_at or 0)) < G.GAME.dollars then
 				affordable[#affordable+1] = deep_copy(held[i])
 			end
 			if valid then result = held[i] break end --don't overhighlight :v

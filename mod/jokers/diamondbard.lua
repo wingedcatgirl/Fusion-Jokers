@@ -43,11 +43,11 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
 		context.other_card:is_suit('Diamonds') then
-			G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + to_big(card.ability.extra.money)
+			G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.money
 			G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
 			return {
 				dollars = card.ability.extra.money,
-				mult = card.ability.extra.mult * (1 + math.floor(to_number(G.GAME.dollars) / card.ability.extra.money_threshold)),
+				mult = card.ability.extra.mult * (1 + math.floor(G.GAME.dollars / card.ability.extra.money_threshold)),
 				card = card
 			}
 		end
@@ -74,7 +74,7 @@ SMODS.Joker {
                     for _, scoring_card in pairs(scoring_hand) do
                         if scoring_card:is_suit("Diamonds") then
                             mult = mult +
-                                card.ability.extra.mult * (1 + math.floor(to_number(G.GAME.dollars) / card.ability.extra.money_threshold)) * JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+                                card.ability.extra.mult * (1 + math.floor(G.GAME.dollars / card.ability.extra.money_threshold)) * JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
                             dollars = dollars +
                                 card.ability.extra.money * JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
                         end
