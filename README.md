@@ -1,6 +1,5 @@
 <p align="center">
-  <a href="" rel="noopener">
- <img width=600px src="art/logo.png?raw=true" alt="Project logo"></a>
+ <img width=600px src="https://github.com/wingedcatgirl/Fusion-Jokers/raw/main/art/logo.png?raw=true" alt="Project logo"></a>
 </p>
 
 
@@ -32,11 +31,9 @@
 
 When you have a fusable joker, pressing on it will show a **"fuse" button**. When you have the correct jokers, and enough money, you can combine the jokers into a powerful **Fusion**! 
 
-<img width=500px src="art/jokers_tab.png?raw=true" alt="Showcase of jokers tab 5"></a>
+<img width=500px src="https://github.com/wingedcatgirl/Fusion-Jokers/raw/main/art/jokers_tab.png?raw=true" alt="Showcase of jokers tab 5"></a>
 
 There are a total of 17 fusions added in the mod, two of which are exclusive to [Six Suits](https://github.com/Aurelius7309/SixSuits)!
-
-You can find a list of their abilities, as well as the jokers needed to make them, in this link: https://itayfeder.github.io/Fusion-Jokers/
 
 ## ⬇ How to Download <a name = "how_to_download"></a>
 
