@@ -2,7 +2,7 @@
 	"id": "FusionJokers",
 	"name": "Fusion Jokers",
 	"display_name": "Fusion Jokers",
-	"author": ["itayfeder", "Lyman"],
+	"author": ["itayfeder", "Lyman", "wingedcatgirl"],
 	"description": "Adds the ability to fuse jokers into special new jokers!",
 	"prefix": "fuse",
 	"main_file": "FusionJokers.lua",

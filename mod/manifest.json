@@ -1,0 +1,9 @@
+{
+    "name": "FusionJokers",
+    "description": "Fuse specific Jokers into special upgraded Jokers",
+    "version_number": "1.3.0",
+    "dependencies": [
+        "Steamodded-Steamodded-1.1531.999999"
+    ],
+    "website_url": "https://github.com/wingedcatgirl/Fusion-Jokers"
+}
